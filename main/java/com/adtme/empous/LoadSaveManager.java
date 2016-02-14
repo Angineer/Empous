@@ -23,10 +23,10 @@ public class LoadSaveManager {
 			out.close();
 		}
 		catch(IOException e){
-//			System.out.println("Couldn't save to file...");
+			System.out.println("Couldn't save to file...");
 			System.exit(2);
 		}
-//		System.out.println("Saved to file");
+		System.out.println("Saved to file");
 	}
 	
 	public static String loadGame(String path){
@@ -44,19 +44,20 @@ public class LoadSaveManager {
 			Empous.LM=(LumberMill) in.readObject();
 			Empous.Inf=(Infrastructure) in.readObject();
 			Empous.Gov=(Government) in.readObject();
+			
+			in.close();
 		}
 		catch(FileNotFoundException e){
-//			System.out.println("Your save files gots screwed up... >:[");
+			System.out.println("Your save files gots screwed up... >:[");
 		}
 		catch(IOException e){
-//			System.out.println("Couldn't load from file...");
+			System.out.println("Couldn't load from file...");
 			System.exit(2);
 		}
 		catch (ClassNotFoundException e) {
-//			System.out.println("Couldn't load from file...");
+			System.out.println("Couldn't load from file...");
 			System.exit(2);
 		}
-		
 		return then;
 	}
 }

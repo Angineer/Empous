@@ -1,13 +1,12 @@
 package main.java.com.adtme.empous;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.*;
-
 import javax.swing.*;
 
 @SuppressWarnings("serial")
-public class Splash extends JPanel {
+public class Splash extends JPanel implements Runnable{
+	
 	private BufferedImage title;
 	
 	private Color background = Color.white;
@@ -15,8 +14,6 @@ public class Splash extends JPanel {
 	private Font font3 = new Font("Serif", Font.ITALIC, 18);
 	
 	private int counter;
-	private TimerListener watch;
-	private Timer timer;
 	private JLabel title1;
 	private JLabel title2;
 	
@@ -36,37 +33,34 @@ public class Splash extends JPanel {
 		title1.setBorder(BorderFactory.createEmptyBorder(0, 0, 275, 0));
 		add(title2, BorderLayout.NORTH);
 		add(title1, BorderLayout.SOUTH);
-		
-		watch = new TimerListener(); //Start the animation timer
-		timer = new Timer(2000, watch);
-		timer.start();
+	}
+	
+	@Override
+	public void run() {
+		while(counter != 4){
+			counter++;
+			//System.out.println( "Frame "+counter);
+			if(counter == 2){
+            	title2.setText("In Association With");
+				title1.setText("El Pollo Diablo Productions");
+            }
+            if(counter == 3){
+            	remove(title2);
+				remove(title1);
+				repaint();
+            }     
+            if(counter == 4){
+            	System.out.println("Animation done...");
+            }
+            try { Thread.sleep(2000); }
+            catch(InterruptedException ie) { }
+		}
+		System.out.println("Returning from animation...");
 	}
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		if(counter==2)
+		if(counter == 3)
 		g.drawImage(title, 0, 0, 640, 480, null);
-	}
-	
-	private class TimerListener implements ActionListener{
-		public void actionPerformed(ActionEvent evt) {
-			counter+=1;
-			if (counter==1){
-				title2.setText("In Association With");
-				title1.setText("El Pollo Diablo Productions");
-			}
-			if (counter==2){
-				remove(title2);
-				remove(title1);
-				repaint();
-			}
-			if (counter==3){
-				timer.stop();
-			}
-		}
-	}
-	
-	public int GetCount(){
-		return counter;
 	}
 }

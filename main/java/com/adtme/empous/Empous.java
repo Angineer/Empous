@@ -2,21 +2,20 @@ package main.java.com.adtme.empous;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
-
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 /**
  * Empous
  * 
- * @category This game is HUGE.
+ * @category Bureaucratic simulation
  * 
  * @author Andy Tracy and Ryan Hurley
  *
  */
 
 public class Empous {
-	
+	// Create game objects
 	public static String empireName = "Andy's Magnificence";
 	public static Residential Res;
 	public static Commercial Com;
@@ -25,46 +24,73 @@ public class Empous {
 	public static Infrastructure Inf;
 	public static Government Gov;
 	
+	// Create GUI objects
 	public static GUI window;
 	public static Splash splash;
 	public static MainMenu menu;
 	public static InGame game;
 	
-	private static int mainloop = 0;
+	// Create flow handling objects
+	private static int gameState = 1; //1=main menu, 2=playing game
+	private static int mainMenuChoice = 0;
 	private static int playloop = 0;
 	private static int newgame = 1;
 	public static int happy = 50;
 	
 	public static void main(String[]args){
-		/*Start up the Game, display splash page*/
-		Empous.splash = new Splash(); //Create the basic game screens
+		// Create GUI object instances
+		System.out.println("Starting up...");
+		Empous.splash = new Splash();
 		Empous.menu = new MainMenu();
 		Empous.game = new InGame();
 		
-		window = new GUI(); //Create the GUI
+		// This is the main game window where content will be displayed
+		System.out.println("Generating GUI...");
+		window = new GUI();
 		
-		/*Begin main loop*/
+		// Splash screen
+		System.out.println("Splash screen...");
+		window.display(Empous.splash);
+		Thread t = new Thread(Empous.splash); // Create thread to run animation
+		t.start(); // Start thread
+		try{ t.join(); } // Wait for thread to finish
+		catch(InterruptedException ie){	}
+		
+		// Main loop
 		while (true){
-			while (mainloop == 0){
-				/*Main menu*/
+			// Main menu
+			if(gameState==1){
+				System.out.println("Main menu...");
 				window.setTitle("Empous");
-				int localchoice = window.MainMenu();
-			
-				if (localchoice == 1){
-					newGame();
-					newgame = 1;
-				}
-				else if (localchoice == 2){
-					if (LoadSaveManager.loadGame("src/saves/savedata2.dat")!=null){
-						mainloop = 2;
-						newgame = 0;
+				window.display(Empous.menu);
+				// Get user input
+				mainMenuChoice=0;
+				while (gameState == 1){
+					mainMenuChoice = Empous.menu.getChoice();
+					// Start new game
+					if(mainMenuChoice == 1){
+						System.out.println("Starting new game...");
+						newGame();
+						gameState=2;
+					}
+					// Load saved game
+					else if (mainMenuChoice == 2){
+						System.out.println("Loading saved game...");
+						if (LoadSaveManager.loadGame("src/main/saves/savedata2.dat")!=null){
+							gameState=2;
+						}
+					}
+					// Quit
+					else if (mainMenuChoice == 3){
+						System.out.println("Exiting...");
+						System.exit(0);
 					}
 				}
-				else if (localchoice == 3){
-					System.exit(0);
-				}
-			} //End main menu loop
-			mainloop = 0;
+			}
+			// In-game
+			while (gameState == 2){
+				
+			}
 			
 			window.setTitle("Empous - "+empireName);
 			
@@ -78,7 +104,7 @@ public class Empous {
 				window.InGame();
 			
 				/*Process Turn*/
-				LoadSaveManager.saveGame("src/saves/savedata2.dat");
+				LoadSaveManager.saveGame("src/main/saves/savedata2.dat");
 				playloop = game.Process();
 			} //End in-game loop
 			winLose();
@@ -96,8 +122,7 @@ public class Empous {
 			LM=new LumberMill();
 			Inf=new Infrastructure();
 			Gov=new Government();
-			mainloop = 1;
-			LoadSaveManager.saveGame("C:\\Users\\Andy2\\javawork\\workspace\\Learning Java\\src\\empous\\saves\\savedata2.dat");
+			LoadSaveManager.saveGame("src/main/saves/savedata2.dat");
 		}
 	}
 
@@ -117,7 +142,7 @@ public class Empous {
 	    	image = ImageIO.read(new File(filepath));
 	    }
 		catch (IOException ex) {
-			System.out.println("Empous error... Couldn't find image!");
+			System.out.println("Couldn't find image!");
 			System.out.println(filepath);
 			System.exit(1);
 	    }
@@ -126,10 +151,10 @@ public class Empous {
 	
 	private static void winLose(){
 		if (happy>=100){
-//			System.out.println("YOU ARE WINNER!");
+			System.out.println("YOU ARE WINNER!");
 		}
 		else if (happy==0){
-//			System.out.println("YOU LOSE!");
+			System.out.println("YOU LOSE!");
 		}
 	}
 }

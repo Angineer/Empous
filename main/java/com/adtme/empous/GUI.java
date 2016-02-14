@@ -29,27 +29,13 @@ public class GUI extends JFrame{
 				
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Other options
 		setVisible(true);
-		splash(); //Start with the splash screen
 	}
 	
-	public void splash(){
-		mainPanel.add(Empous.splash, BorderLayout.CENTER);
-		while(Empous.splash.GetCount() < 3){
-		}
-	}
-	
-	public int MainMenu(){
+	public void display(JPanel content){
 		mainPanel.removeAll();
-		mainPanel.add(Empous.menu);
+		mainPanel.add(content);
 		mainPanel.revalidate();
 		mainPanel.repaint();
-		int loop = 0;
-		
-		while (loop==0){ //Wait for the player to press a button
-			loop = Empous.menu.GetChoice();
-		}
-		
-		return loop; //Return the choice to the main program
 	}
 	
 	public void InGame(){		

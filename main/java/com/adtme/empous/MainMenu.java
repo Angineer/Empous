@@ -9,7 +9,7 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class MainMenu extends JPanel {
 	private BufferedImage title;
-	private int choice = 0;
+	private volatile int choice = 0;
 	private int mousein;
 	
 	private JPanel buttons; //Panel to hold the three buttons
@@ -58,16 +58,10 @@ public class MainMenu extends JPanel {
 		g.drawImage(title, 0, 0, 640, 480, null);
 	}
 	
-	public int GetChoice(){
-		if (choice!=0){
+	public int getChoice(){
 			int gchoice = choice;
 			choice = 0;
 			return gchoice;
-		}
-		else{
-			return choice;
-		}
-		
 	}
 	
 	public class ButtonClick implements MouseListener {
