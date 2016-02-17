@@ -40,7 +40,6 @@ public class InGame extends JPanel {
 	public int bad1=0, bad2=0, bad3=0;
 	
 	private int mousein = 0;
-	private int choice = 0;
 	
 	public InGame(){
 		chairimg = Empous.LoadImage("src/main/resources/images/chair.png");
@@ -130,7 +129,6 @@ public class InGame extends JPanel {
 		add(meter, BorderLayout.EAST);
 		add(resources, BorderLayout.WEST);
 		add(control, BorderLayout.SOUTH);
-		
 	}
 	
 	public void paintComponent(Graphics g){
@@ -238,10 +236,11 @@ public class InGame extends JPanel {
 				Sub.showGov();
 			}
 			if (mousein == 6 && evt.getSource()==turn){
-				choice = 6;
+				
 			}
 			if (mousein == 7 && evt.getSource()==savereturn){
 				System.out.println("Saving and returning to menu!");
+				LoadSaveManager.saveGame(Empous.saveSlot);
 				Empous.window.display(Empous.menu);
 			}
 		}
@@ -312,10 +311,6 @@ public class InGame extends JPanel {
 		double delhappy;
 		double f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16, f17;
 		double[] temp1={1,0}, temp2={1,0}, temp3={1,0};
-		
-		if (choice==7){
-			return 1; //Skip processing if they want to go to the menu
-		}
 		
 		Empous.Gov.employment = (Empous.Com.generate2()+Empous.Ind.generate2()+Empous.LM.generate2()) *
 				(1+Empous.Gov.getGov(4)/50+Empous.Gov.getGov(7)/50);	//Calculate proportional resources, Edu Sci

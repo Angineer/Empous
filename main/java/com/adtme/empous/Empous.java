@@ -31,6 +31,7 @@ public class Empous {
 	public static InGame game;
 	
 	// Create game state objects
+	public static int saveSlot = 1;
 	public static int happy = 50;
 	
 	public static void main(String[]args){
@@ -70,7 +71,7 @@ public class Empous {
 			Gov=new Government();
 			
 			// Save to disk 
-			LoadSaveManager.saveGame();
+			saveSlot = LoadSaveManager.saveGame(0);
 		}
 		window.setTitle("Empous - "+empireName);
 		playGame(1);
@@ -78,7 +79,7 @@ public class Empous {
 	
 	public static void loadGame(){
 		System.out.println("Loading saved game...");
-		LoadSaveManager.loadGame();
+		saveSlot = LoadSaveManager.loadGame();
 		playGame(0);
 	}
 	

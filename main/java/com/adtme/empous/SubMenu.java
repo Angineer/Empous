@@ -26,9 +26,21 @@ public class SubMenu extends JFrame{
 	private JButton newspaper;
 	private JButton map;
 	private JButton close;
+	private JButton govClose;
 	private ImageIcon icon;
 	private GridBagConstraints c;
 	private ButtonClick buttonWatch;
+	
+	private JSlider freedom;
+	private JSlider military;
+	private JSlider taxes;
+	private JSlider education;
+	private JSlider infrastructure;
+	private JSlider environment;
+	private JSlider sciencetech;
+	private JSlider healthcare;
+	private JSlider admin;
+	private JCheckBox mjbox;
 	
 	private JLabel jla = new JLabel();
 	private JLabel jlb = new JLabel();
@@ -55,7 +67,6 @@ public class SubMenu extends JFrame{
 	int[][] sum = new int[1][4];
 	
 	private int mousein = 0;
-	private int choice = 0;
 
 	public SubMenu(int input){
 		super(); //Create the frame
@@ -139,10 +150,10 @@ public class SubMenu extends JFrame{
 			content.add(subcontent1);
 			content.add(subcontent2);
 			
-			close = new JButton("Close");
-			close.addMouseListener(buttonWatch);
+			govClose = new JButton("Close");
+			govClose.addMouseListener(buttonWatch);
 			
-			buttons.add(close);
+			buttons.add(govClose);
 		}
 		else{
 			setTitle("Update");
@@ -328,16 +339,16 @@ public class SubMenu extends JFrame{
 	}
 	
 	public void showGov(){
-		JSlider freedom = new JSlider(0,10,Empous.Gov.getGov(1));
-		JSlider military = new JSlider(0,10,Empous.Gov.getGov(2));
-		JSlider taxes = new JSlider(0,10,Empous.Gov.getGov(3));
-		JSlider education = new JSlider(0,10,Empous.Gov.getGov(4));
-		JSlider infrastructure = new JSlider(0,10,Empous.Gov.getGov(5));
-		JSlider environment = new JSlider(0,10,Empous.Gov.getGov(6));
-		JSlider sciencetech = new JSlider(0,10,Empous.Gov.getGov(7));
-		JSlider healthcare = new JSlider(0,10,Empous.Gov.getGov(8));
-		JSlider admin = new JSlider(0,10,Empous.Gov.getGov(9));
-		JCheckBox mjbox = new JCheckBox("",Empous.Gov.getMJ());
+		freedom = new JSlider(0,10,Empous.Gov.getGov(1));
+		military = new JSlider(0,10,Empous.Gov.getGov(2));
+		taxes = new JSlider(0,10,Empous.Gov.getGov(3));
+		education = new JSlider(0,10,Empous.Gov.getGov(4));
+		infrastructure = new JSlider(0,10,Empous.Gov.getGov(5));
+		environment = new JSlider(0,10,Empous.Gov.getGov(6));
+		sciencetech = new JSlider(0,10,Empous.Gov.getGov(7));
+		healthcare = new JSlider(0,10,Empous.Gov.getGov(8));
+		admin = new JSlider(0,10,Empous.Gov.getGov(9));
+		mjbox = new JCheckBox("",Empous.Gov.getMJ());
 		
 		description.setText("<html>The Government makes the laws and set the policies that tell " +
 			"your citizens what they can and can't do.</html>");
@@ -391,16 +402,6 @@ public class SubMenu extends JFrame{
 		
 		setVisible(true);
 		panel.revalidate();
-		/*Empous.Gov.setGov(1, freedom.getValue());
-		Empous.Gov.setGov(2, military.getValue());
-		Empous.Gov.setGov(3, taxes.getValue());
-		Empous.Gov.setGov(4, education.getValue());
-		Empous.Gov.setGov(5, infrastructure.getValue());
-		Empous.Gov.setGov(6, environment.getValue());
-		Empous.Gov.setGov(7, sciencetech.getValue());
-		Empous.Gov.setGov(8, healthcare.getValue());
-		Empous.Gov.setGov(9, admin.getValue());
-		Empous.Gov.setMJ(mjbox.isSelected());*/
 	}
 	
 	public void showUpdate(int firstupdate){
@@ -455,7 +456,7 @@ public class SubMenu extends JFrame{
 				jenn.setText("YOUR CITIZENS ARE RIOTING! IMPROVE THE SITUATION QUICK!\n\n" +
 						"If you don't make some good changes, there is no saying what will become " +
 						"of your empire's stability! You can always increase the military for now, " +
-						"but there is substitute for fixing the underlying causes!");
+						"but there is no substitute for fixing the underlying causes!");
 			}
 		}
 		content.add(jenn);
@@ -532,6 +533,9 @@ public class SubMenu extends JFrame{
 			if (evt.getSource()==close){
 				mousein = 3;
 			}
+			if (evt.getSource()==govClose){
+				mousein = 4;
+			}
 		}
 		public void mouseExited(MouseEvent evt) {
 			mousein=0;
@@ -539,7 +543,6 @@ public class SubMenu extends JFrame{
 		public void mousePressed(MouseEvent evt) {}
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==buysell){
-				choice = 1;
 			}
 			if (mousein == 1 && evt.getSource()==newspaper){
 				System.out.println("Newspaper");
@@ -548,6 +551,20 @@ public class SubMenu extends JFrame{
 				showMap();
 			}
 			if (mousein == 3 && evt.getSource()==close){
+				setVisible(false); //you can't see me!
+				dispose(); //Destroy the JFrame object
+			}
+			if (mousein == 4 && evt.getSource()==govClose){
+				Empous.Gov.setGov(1, freedom.getValue());
+				Empous.Gov.setGov(2, military.getValue());
+				Empous.Gov.setGov(3, taxes.getValue());
+				Empous.Gov.setGov(4, education.getValue());
+				Empous.Gov.setGov(5, infrastructure.getValue());
+				Empous.Gov.setGov(6, environment.getValue());
+				Empous.Gov.setGov(7, sciencetech.getValue());
+				Empous.Gov.setGov(8, healthcare.getValue());
+				Empous.Gov.setGov(9, admin.getValue());
+				Empous.Gov.setMJ(mjbox.isSelected());
 				setVisible(false); //you can't see me!
 				dispose(); //Destroy the JFrame object
 			}
