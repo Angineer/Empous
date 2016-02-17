@@ -37,15 +37,4 @@ public class GUI extends JFrame{
 		mainPanel.revalidate();
 		mainPanel.repaint();
 	}
-	
-	public void InGame(){		
-		Empous.game.generateView();
-		mainPanel.removeAll();
-		mainPanel.add(Empous.game);
-		mainPanel.revalidate();
-		mainPanel.repaint();
-		
-		Empous.game.Play(); //Play the game
-	}
-
 }

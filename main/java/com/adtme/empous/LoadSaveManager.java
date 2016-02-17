@@ -3,10 +3,19 @@ package main.java.com.adtme.empous;
 import java.io.*;
 import java.util.Date;
 
+import javax.swing.JOptionPane;
+
 public class LoadSaveManager {
 
-	public static void saveGame(String path){
-		File saveFile = new File(path);
+	public static void saveGame(){
+		// Get user input
+		Object[] options = {"1", "2", "3"};
+		int slot = JOptionPane.showOptionDialog(null, "Select your save slot", "Save Slot", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		slot++;
+		
+		// Save game
+		System.out.println("Saving save slot " + slot + "...");
+		File saveFile = new File("src/main/saves/savedata"+slot+".dat");
 		Date now = new Date();
 		try{
 			FileOutputStream fstream = new FileOutputStream (saveFile);
@@ -29,8 +38,15 @@ public class LoadSaveManager {
 		System.out.println("Saved to file");
 	}
 	
-	public static String loadGame(String path){
-		File loadFile = new File(path);
+	public static String loadGame(){
+		// Get user input
+		Object[] options = {"1", "2", "3"};
+		int slot = JOptionPane.showOptionDialog(null, "Select your save slot", "Save Slot", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		slot++;
+		
+		// Load saved game
+		System.out.println("Loading save slot " + slot + "...");
+		File loadFile = new File("src/main/saves/savedata"+slot+".dat");
 		String then = null;
 		try{
 			FileInputStream fstream = new FileInputStream (loadFile);

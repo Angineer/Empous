@@ -37,7 +37,7 @@ public class Splash extends JPanel implements Runnable{
 	
 	@Override
 	public void run() {
-		while(counter != 4){
+		while(counter != 3){
 			counter++;
 			//System.out.println( "Frame "+counter);
 			if(counter == 2){
@@ -49,13 +49,10 @@ public class Splash extends JPanel implements Runnable{
 				remove(title1);
 				repaint();
             }     
-            if(counter == 4){
-            	System.out.println("Animation done...");
-            }
-            try { Thread.sleep(2000); }
+            try { Thread.sleep(250); }
             catch(InterruptedException ie) { }
 		}
-		System.out.println("Returning from animation...");
+		System.out.println("Animation done...");
 	}
 	
 	public void paintComponent(Graphics g){

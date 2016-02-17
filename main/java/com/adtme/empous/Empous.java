@@ -30,11 +30,7 @@ public class Empous {
 	public static MainMenu menu;
 	public static InGame game;
 	
-	// Create flow handling objects
-	private static int gameState = 1; //1=main menu, 2=playing game
-	private static int mainMenuChoice = 0;
-	private static int playloop = 0;
-	private static int newgame = 1;
+	// Create game state objects
 	public static int happy = 50;
 	
 	public static void main(String[]args){
@@ -55,65 +51,15 @@ public class Empous {
 		t.start(); // Start thread
 		try{ t.join(); } // Wait for thread to finish
 		catch(InterruptedException ie){	}
-		
-		// Main loop
-		while (true){
-			// Main menu
-			if(gameState==1){
-				System.out.println("Main menu...");
-				window.setTitle("Empous");
-				window.display(Empous.menu);
-				// Get user input
-				mainMenuChoice=0;
-				while (gameState == 1){
-					mainMenuChoice = Empous.menu.getChoice();
-					// Start new game
-					if(mainMenuChoice == 1){
-						System.out.println("Starting new game...");
-						newGame();
-						gameState=2;
-					}
-					// Load saved game
-					else if (mainMenuChoice == 2){
-						System.out.println("Loading saved game...");
-						if (LoadSaveManager.loadGame("src/main/saves/savedata2.dat")!=null){
-							gameState=2;
-						}
-					}
-					// Quit
-					else if (mainMenuChoice == 3){
-						System.out.println("Exiting...");
-						System.exit(0);
-					}
-				}
-			}
-			// In-game
-			while (gameState == 2){
-				
-			}
-			
-			window.setTitle("Empous - "+empireName);
-			
-			while (playloop == 0){
-				/*Give an update*/
-				SubMenu Sub = new SubMenu(6);
-				Sub.showUpdate(newgame);
-				if (newgame==1) newgame=0;
-								
-				/*The Chair*/
-				window.InGame();
-			
-				/*Process Turn*/
-				LoadSaveManager.saveGame("src/main/saves/savedata2.dat");
-				playloop = game.Process();
-			} //End in-game loop
-			winLose();
-			playloop = 0;
-			
-		} //End main loop
+
+		// Display main menu
+		System.out.println("Main menu...");
+		window.setTitle("Empous");
+		window.display(Empous.menu);			
 	}
 	
 	public static void newGame(){
+		System.out.println("Starting new game...");
 		empireName = JOptionPane.showInputDialog(null, "Enter your empire's name:");
 		if (empireName != null){
 			Res=new Residential();
@@ -122,18 +68,26 @@ public class Empous {
 			LM=new LumberMill();
 			Inf=new Infrastructure();
 			Gov=new Government();
-			LoadSaveManager.saveGame("src/main/saves/savedata2.dat");
+			
+			// Save to disk 
+			LoadSaveManager.saveGame();
 		}
-	}
-
-	public static void viewMap(){
-		/*Display the map*/
+		window.setTitle("Empous - "+empireName);
+		playGame(1);
 	}
 	
-	public static void buy(int sector, int size, int cap, int oil, int wood){
-		if (sector==1){
-			
-		}
+	public static void loadGame(){
+		System.out.println("Loading saved game...");
+		LoadSaveManager.loadGame();
+		playGame(0);
+	}
+	
+	public static void playGame(int newGame){
+		// Display game
+		window.display(Empous.game);
+		
+		// Start with an update
+		Empous.game.update();
 	}
 	
 	public static BufferedImage LoadImage(String filepath){
@@ -149,7 +103,7 @@ public class Empous {
 		return image;
 	}
 	
-	private static void winLose(){
+	public static void winLose(){
 		if (happy>=100){
 			System.out.println("YOU ARE WINNER!");
 		}

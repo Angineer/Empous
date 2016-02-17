@@ -138,6 +138,12 @@ public class InGame extends JPanel {
 		g.drawImage(chairimg, 0, 0, 640, 480, null);
 	}
 	
+	public void update(){
+		System.out.println("Showing new update...");
+		SubMenu Sub = new SubMenu(6);
+		Sub.showUpdate(1);
+	}
+	
 	public void Play(){
 		choice=0;
 		while(true){ //Wait for the player to make a choice

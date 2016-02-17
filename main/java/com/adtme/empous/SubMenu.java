@@ -10,7 +10,6 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class SubMenu extends JFrame{
 	private Map mapimage;
-	private int mapdone = 0;
 	private int sector;
 	private String sectorstr;
 	private JPanel panel;
@@ -435,6 +434,7 @@ public class SubMenu extends JFrame{
 		jenn.setSize(420, 200);
 		jenn.setFont(description.getFont());
 		if (firstupdate==1){
+			System.out.println("Welcome to the game...");
 			description.setText("Hi! My name is Jennifer.");
 			jenn.setText("I'm your administrative assistant and I'm " +
 					"glad to welcome you to the mayor's office! I will be here to keep you up " +
@@ -485,21 +485,6 @@ public class SubMenu extends JFrame{
 		setVisible(true);
 		panel.revalidate();
 		panel.repaint();
-		while(isVisible()!=false){
-			if (choice==1){
-				System.out.println("Newspaper");
-				choice=0;
-			}
-			if (choice==2){
-				showMap();
-				choice=0;
-			}
-			if (choice==3){
-				setVisible(false); //you can't see me!
-				dispose(); //Destroy the JFrame object
-				break;
-			}
-		}
 	}
 	
 	public String suggest(int line){
@@ -548,18 +533,12 @@ public class SubMenu extends JFrame{
 		setContentPane(mapimage);
 		mapimage.revalidate();
 		repaint();
-		
-		while(mapdone==0 && isVisible()==true){
-		}
-		mapdone=0;
-		
-		setContentPane(panel);
 	}
 	
 	public class ButtonClick implements MouseListener {
 		public void mouseClicked(MouseEvent evt) {
 			if (evt.getSource()==mapimage){
-				mapdone = 1;
+				setContentPane(panel);
 			}
 		}
 		public void mouseEntered(MouseEvent evt) {
@@ -585,13 +564,14 @@ public class SubMenu extends JFrame{
 				choice = 1;
 			}
 			if (mousein == 1 && evt.getSource()==newspaper){
-				choice = 1;
+				System.out.println("Newspaper");
 			}
 			if (mousein == 2 && evt.getSource()==map){
-				choice = 2;
+				showMap();
 			}
 			if (mousein == 3 && evt.getSource()==close){
-				choice = 3;
+				setVisible(false); //you can't see me!
+				dispose(); //Destroy the JFrame object
 			}
 		}
 	}

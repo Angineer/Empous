@@ -9,7 +9,6 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class MainMenu extends JPanel {
 	private BufferedImage title;
-	private volatile int choice = 0;
 	private int mousein;
 	
 	private JPanel buttons; //Panel to hold the three buttons
@@ -58,12 +57,6 @@ public class MainMenu extends JPanel {
 		g.drawImage(title, 0, 0, 640, 480, null);
 	}
 	
-	public int getChoice(){
-			int gchoice = choice;
-			choice = 0;
-			return gchoice;
-	}
-	
 	public class ButtonClick implements MouseListener {
 
 		public void mouseClicked(MouseEvent evt) {}
@@ -84,13 +77,14 @@ public class MainMenu extends JPanel {
 		public void mousePressed(MouseEvent evt) {}
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==newgame){
-				choice = 1;
+				Empous.newGame();
 			}
 			if (mousein == 2 && evt.getSource()==loadgame){
-				choice = 2;
+				Empous.loadGame();
 			}
 			if (mousein == 3 && evt.getSource()==quitgame){
-				choice = 3;
+				System.out.println("Exiting...");
+				System.exit(0);
 			}
 		}
 	}
