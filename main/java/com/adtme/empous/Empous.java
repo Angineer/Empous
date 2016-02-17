@@ -60,7 +60,7 @@ public class Empous {
 	
 	public static void newGame(){
 		System.out.println("Starting new game...");
-		empireName = JOptionPane.showInputDialog(null, "Enter your empire's name:");
+		empireName = JOptionPane.showInputDialog(null, "Enter your empire's name:", "Empire Name");
 		if (empireName != null){
 			Res=new Residential();
 			Com=new Commercial();
@@ -87,7 +87,7 @@ public class Empous {
 		window.display(Empous.game);
 		
 		// Start with an update
-		Empous.game.update();
+		Empous.game.update(newGame);
 	}
 	
 	public static BufferedImage LoadImage(String filepath){

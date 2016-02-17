@@ -138,38 +138,13 @@ public class InGame extends JPanel {
 		g.drawImage(chairimg, 0, 0, 640, 480, null);
 	}
 	
-	public void update(){
+	public void update(int newGame){
 		System.out.println("Showing new update...");
 		SubMenu Sub = new SubMenu(6);
-		Sub.showUpdate(1);
-	}
-	
-	public void Play(){
-		choice=0;
-		while(true){ //Wait for the player to make a choice
-			if (choice>=1 && choice<=4){ //If they click a sector button, bring up the window
-				SubMenu Sub = new SubMenu(choice);
-				if (choice==1) Sub.ShowSector(Empous.Com);
-				if (choice==2) Sub.ShowSector(Empous.Res);
-				if (choice==3) Sub.ShowSector(Empous.Ind);
-				if (choice==4) Sub.ShowSector(Empous.LM);
-				choice = 0;
-			}
-			if (choice==5){ //If they click the government button, bring up the window
-				SubMenu Sub = new SubMenu(choice);
-				Sub.showGov();
-				choice = 0;
-			}
-			if (choice==6){ //Process current changes and check if you won
-//				System.out.println("You probably want to finish your turn now!");
-				choice=0;
-				break;
-			}
-			if (choice==7){ //Save the game for later and return to the menu
-//				System.out.println("Saving and returning to menu!");
-				break;
-			}
-		}
+		if(newGame==1) Sub.showUpdate(1);
+		else Sub.showUpdate(0);
+		
+		generateView();
 	}
 	
 	public void generateView(){
@@ -243,25 +218,31 @@ public class InGame extends JPanel {
 		public void mousePressed(MouseEvent evt) {}
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==commercial){
-				choice = 1;
+				SubMenu Sub = new SubMenu(1);
+				Sub.ShowSector(Empous.Com);
 			}
 			if (mousein == 2 && evt.getSource()==residential){
-				choice = 2;
+				SubMenu Sub = new SubMenu(2);
+				Sub.ShowSector(Empous.Res);
 			}
 			if (mousein == 3 && evt.getSource()==industrial){
-				choice = 3;
+				SubMenu Sub = new SubMenu(3);
+				Sub.ShowSector(Empous.Ind);
 			}
 			if (mousein == 4 && evt.getSource()==lumbermill){
-				choice = 4;
+				SubMenu Sub = new SubMenu(4);
+				Sub.ShowSector(Empous.LM);
 			}
 			if (mousein == 5 && evt.getSource()==government){
-				choice = 5;
+				SubMenu Sub = new SubMenu(5);
+				Sub.showGov();
 			}
 			if (mousein == 6 && evt.getSource()==turn){
 				choice = 6;
 			}
 			if (mousein == 7 && evt.getSource()==savereturn){
-				choice = 7;
+				System.out.println("Saving and returning to menu!");
+				Empous.window.display(Empous.menu);
 			}
 		}
 	}

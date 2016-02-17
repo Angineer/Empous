@@ -80,22 +80,22 @@ public class SubMenu extends JFrame{
 		if (input <=4){
 			if (input==1){
 				setTitle("Sector View - Commercial");
-				icon = new ImageIcon("src/resources/images/ComIcon.png");
+				icon = new ImageIcon("src/main/resources/images/ComIcon.png");
 				sectorstr = "Commercial";
 			}
 			else if (input==2){
 				setTitle("Sector View - Residential");
-				icon = new ImageIcon("src/resources/images/ResIcon.png");
+				icon = new ImageIcon("src/main/resources/images/ResIcon.png");
 				sectorstr = "Residential";
 			}
 			else if (input==3){
 				setTitle("Sector View - Industrial");
-				icon = new ImageIcon("src/resources/images/IndIcon.png");
+				icon = new ImageIcon("src/main/resources/images/IndIcon.png");
 				sectorstr = "Industrial";
 			}
 			else if (input==4){
 				setTitle("Sector View - Lumber Mills");
-				icon = new ImageIcon("src/resources/images/LumberIcon.png");
+				icon = new ImageIcon("src/main/resources/images/LumberIcon.png");
 				sectorstr = "Lumber Mill";
 			}
 			DescColor = Color.GRAY;
@@ -128,7 +128,7 @@ public class SubMenu extends JFrame{
 		}
 		else if (input==5){
 			setTitle("Sector View - Government");
-			icon = new ImageIcon("src/resources/images/GovIcon.png");
+			icon = new ImageIcon("src/main/resources/images/GovIcon.png");
 			sectorstr = "Government";
 			
 			DescColor = Color.GRAY;
@@ -146,7 +146,7 @@ public class SubMenu extends JFrame{
 		}
 		else{
 			setTitle("Update");
-			icon = new ImageIcon("src/resources/images/JennIcon.png");
+			icon = new ImageIcon("src/main/resources/images/JennIcon.png");
 			sectorstr = "Update";
 			
 			DescColor = Color.BLACK;
@@ -325,19 +325,6 @@ public class SubMenu extends JFrame{
 		
 		setVisible(true);
 		panel.revalidate();
-		while(isVisible()!=false){
-			if (choice==1 && sector!=5){
-				BuySell buywindow = new BuySell(sector);
-				buywindow.doBuySell(Sector);
-				GenerateView(Sector);
-				choice=0;
-			}
-			if (choice==3){
-				setVisible(false); //you can't see me!
-				dispose(); //Destroy the JFrame object
-				break;
-			}
-		}
 	}
 	
 	public void showGov(){
@@ -404,25 +391,16 @@ public class SubMenu extends JFrame{
 		
 		setVisible(true);
 		panel.revalidate();
-		while(isVisible()!=false){
-			if (choice==3){
-				Empous.Gov.setGov(1, freedom.getValue());
-				Empous.Gov.setGov(2, military.getValue());
-				Empous.Gov.setGov(3, taxes.getValue());
-				Empous.Gov.setGov(4, education.getValue());
-				Empous.Gov.setGov(5, infrastructure.getValue());
-				Empous.Gov.setGov(6, environment.getValue());
-				Empous.Gov.setGov(7, sciencetech.getValue());
-				Empous.Gov.setGov(8, healthcare.getValue());
-				Empous.Gov.setGov(9, admin.getValue());
-				Empous.Gov.setMJ(mjbox.isSelected());
-				
-				
-				setVisible(false); //you can't see me!
-				dispose(); //Destroy the JFrame object
-				break;
-			}
-		}
+		/*Empous.Gov.setGov(1, freedom.getValue());
+		Empous.Gov.setGov(2, military.getValue());
+		Empous.Gov.setGov(3, taxes.getValue());
+		Empous.Gov.setGov(4, education.getValue());
+		Empous.Gov.setGov(5, infrastructure.getValue());
+		Empous.Gov.setGov(6, environment.getValue());
+		Empous.Gov.setGov(7, sciencetech.getValue());
+		Empous.Gov.setGov(8, healthcare.getValue());
+		Empous.Gov.setGov(9, admin.getValue());
+		Empous.Gov.setMJ(mjbox.isSelected());*/
 	}
 	
 	public void showUpdate(int firstupdate){
