@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 
 public class Empous {
 	// Create game objects
-	public static String empireName = "Andy's Magnificence";
+	public static String empireName = "Empous";
 	public static Residential Res;
 	public static Commercial Com;
 	public static Industrial Ind;
@@ -32,7 +32,6 @@ public class Empous {
 	
 	// Create game state objects
 	public static int saveSlot = 1;
-	public static int happy = 50;
 	
 	public static void main(String[]args){
 		// Create GUI object instances
@@ -61,7 +60,8 @@ public class Empous {
 	
 	public static void newGame(){
 		System.out.println("Starting new game...");
-		empireName = JOptionPane.showInputDialog(null, "Enter your empire's name:", "Empire Name");
+		empireName = JOptionPane.showInputDialog(null, "Enter your empire's name:", "Empire Name", JOptionPane.QUESTION_MESSAGE);
+		//JOptionPane.showInputDialog(parentComponent, message, title, messageType, icon, selectionValues, initialSelectionValue)
 		if (empireName != null){
 			Res=new Residential();
 			Com=new Commercial();
@@ -73,7 +73,6 @@ public class Empous {
 			// Save to disk 
 			saveSlot = LoadSaveManager.saveGame(0);
 		}
-		window.setTitle("Empous - "+empireName);
 		playGame(1);
 	}
 	
@@ -86,6 +85,7 @@ public class Empous {
 	public static void playGame(int newGame){
 		// Display game
 		window.display(Empous.game);
+		window.setTitle("Empous - "+empireName);
 		
 		// Start with an update
 		Empous.game.update(newGame);
@@ -105,10 +105,10 @@ public class Empous {
 	}
 	
 	public static void winLose(){
-		if (happy>=100){
+		if (Empous.Gov.publicopinion>=100){
 			System.out.println("YOU ARE WINNER!");
 		}
-		else if (happy==0){
+		else if (Empous.Gov.publicopinion==0){
 			System.out.println("YOU LOSE!");
 		}
 	}

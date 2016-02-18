@@ -138,11 +138,10 @@ public class InGame extends JPanel {
 	
 	public void update(int newGame){
 		System.out.println("Showing new update...");
+		generateView();
 		SubMenu Sub = new SubMenu(6);
 		if(newGame==1) Sub.showUpdate(1);
 		else Sub.showUpdate(0);
-		
-		generateView();
 	}
 	
 	public void generateView(){
@@ -236,11 +235,20 @@ public class InGame extends JPanel {
 				Sub.showGov();
 			}
 			if (mousein == 6 && evt.getSource()==turn){
-				
+				LoadSaveManager.saveGame(Empous.saveSlot);
+				int end=Process();
+				if(end==1){
+					Empous.winLose();
+					Empous.window.display(Empous.menu);
+				}
+				else{
+					update(0);
+				}
 			}
 			if (mousein == 7 && evt.getSource()==savereturn){
-				System.out.println("Saving and returning to menu!");
+				System.out.println("Saving and returning to menu...");
 				LoadSaveManager.saveGame(Empous.saveSlot);
+				Empous.window.setTitle("Empous");
 				Empous.window.display(Empous.menu);
 			}
 		}
@@ -407,8 +415,8 @@ public class InGame extends JPanel {
 		
 		Empous.Gov.riotstate = riotGen();	//See if the people riot
 		
-		
-		if (Empous.Gov.publicopinion>=100 || Empous.Gov.publicopinion==0){ //If they won or lost, stop playing
+		// Check for win or lose
+		if (Empous.Gov.publicopinion>=100 || Empous.Gov.publicopinion==0){
 			return 1;
 		}
 		return 0; //If no previous conditions met, continue playing

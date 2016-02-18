@@ -1,8 +1,6 @@
 package main.java.com.adtme.empous;
 
 import java.io.*;
-import java.util.Date;
-
 import javax.swing.JOptionPane;
 
 public class LoadSaveManager {
@@ -18,12 +16,10 @@ public class LoadSaveManager {
 		// Save game
 		System.out.println("Saving save slot " + slot + "...");
 		File saveFile = new File("src/main/saves/savedata"+slot+".dat");
-		Date now = new Date();
 		try{
 			FileOutputStream fstream = new FileOutputStream (saveFile);
 			ObjectOutputStream out = new ObjectOutputStream(fstream);
 			out.writeObject(Empous.empireName);
-			out.writeObject(now.toString());
 			out.writeObject(Empous.Com);
 			out.writeObject(Empous.Res);
 			out.writeObject(Empous.Ind);
@@ -34,10 +30,10 @@ public class LoadSaveManager {
 			out.close();
 		}
 		catch(IOException e){
-			System.out.println("Couldn't save to file...");
+			System.out.println("Couldn't save to file!");
 			System.exit(2);
 		}
-		System.out.println("Saved to file");
+		System.out.println("Saved to file!");
 		return slot;
 	}
 	
@@ -55,7 +51,6 @@ public class LoadSaveManager {
 			ObjectInputStream in = new ObjectInputStream(fstream);
 			
 			Empous.empireName = (String) in.readObject();
-			String then=(String) in.readObject();
 			Empous.Com=(Commercial) in.readObject();
 			Empous.Res=(Residential) in.readObject();
 			Empous.Ind=(Industrial) in.readObject();
@@ -66,14 +61,14 @@ public class LoadSaveManager {
 			in.close();
 		}
 		catch(FileNotFoundException e){
-			System.out.println("Your save files gots screwed up... >:[");
+			System.out.println("Your save files got screwed up! >:[");
 		}
 		catch(IOException e){
-			System.out.println("Couldn't load from file...");
+			System.out.println("Couldn't load from file!");
 			System.exit(2);
 		}
 		catch (ClassNotFoundException e) {
-			System.out.println("Couldn't load from file...");
+			System.out.println("Couldn't load from file!");
 			System.exit(2);
 		}
 		return slot;
