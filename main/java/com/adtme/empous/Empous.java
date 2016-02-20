@@ -72,8 +72,8 @@ public class Empous {
 			
 			// Save to disk 
 			saveSlot = LoadSaveManager.saveGame(0);
+			playGame(1);
 		}
-		playGame(1);
 	}
 	
 	public static void loadGame(){
@@ -88,7 +88,7 @@ public class Empous {
 		window.setTitle("Empous - "+empireName);
 		
 		// Start with an update
-		Empous.game.update(newGame);
+		Empous.game.showUpdate(newGame);
 	}
 	
 	public static BufferedImage LoadImage(String filepath){

@@ -136,7 +136,7 @@ public class InGame extends JPanel {
 		g.drawImage(chairimg, 0, 0, 640, 480, null);
 	}
 	
-	public void update(int newGame){
+	public void showUpdate(int newGame){
 		System.out.println("Showing new update...");
 		generateView();
 		SubMenu Sub = new SubMenu(6);
@@ -144,8 +144,17 @@ public class InGame extends JPanel {
 		else Sub.showUpdate(0);
 	}
 	
+	public void updateVars(){
+		happy = Empous.Gov.publicopinion;
+		cap = Empous.Gov.reserve;
+		wood = Empous.Gov.woodstock;
+		oil = Empous.Gov.oiltank;
+		pop = Empous.Gov.census;
+		jobs = Empous.Gov.employment;
+	}
+	
 	public void generateView(){
-		UpdateVars();
+		updateVars();
 		
 		if(pop<1000){
 			poplabel.setText("Population = "+pop);
@@ -164,7 +173,7 @@ public class InGame extends JPanel {
 		repaint();
 	}
 	
-	public static double round2(double num) {
+	private static double round2(double num) {
 		if (num>=1000000){
 			double result = (double)num / 10000;
 			result = Math.round(result);
@@ -182,78 +191,7 @@ public class InGame extends JPanel {
 			return result;
 		}
 	}
-	
-	public class ButtonClick implements MouseListener {
-		
-		public void mouseClicked(MouseEvent evt) {}
-		public void mouseEntered(MouseEvent evt) {
-			if (evt.getSource()==commercial){
-				mousein = 1;
-			}
-			if (evt.getSource()==residential){
-				mousein = 2;
-			}
-			if (evt.getSource()==industrial){
-				mousein = 3;
-			}
-			if (evt.getSource()==lumbermill){
-				mousein = 4;
-			}
-			if (evt.getSource()==government){
-				mousein = 5;
-			}
-			if (evt.getSource()==turn){
-				mousein = 6;
-			}
-			if (evt.getSource()==savereturn){
-				mousein = 7;
-			}
-		}
-		public void mouseExited(MouseEvent evt) {
-			mousein=0;
-		}
-		public void mousePressed(MouseEvent evt) {}
-		public void mouseReleased(MouseEvent evt) {
-			if (mousein == 1 && evt.getSource()==commercial){
-				SubMenu Sub = new SubMenu(1);
-				Sub.ShowSector(Empous.Com);
-			}
-			if (mousein == 2 && evt.getSource()==residential){
-				SubMenu Sub = new SubMenu(2);
-				Sub.ShowSector(Empous.Res);
-			}
-			if (mousein == 3 && evt.getSource()==industrial){
-				SubMenu Sub = new SubMenu(3);
-				Sub.ShowSector(Empous.Ind);
-			}
-			if (mousein == 4 && evt.getSource()==lumbermill){
-				SubMenu Sub = new SubMenu(4);
-				Sub.ShowSector(Empous.LM);
-			}
-			if (mousein == 5 && evt.getSource()==government){
-				SubMenu Sub = new SubMenu(5);
-				Sub.showGov();
-			}
-			if (mousein == 6 && evt.getSource()==turn){
-				LoadSaveManager.saveGame(Empous.saveSlot);
-				int end=Process();
-				if(end==1){
-					Empous.winLose();
-					Empous.window.display(Empous.menu);
-				}
-				else{
-					update(0);
-				}
-			}
-			if (mousein == 7 && evt.getSource()==savereturn){
-				System.out.println("Saving and returning to menu...");
-				LoadSaveManager.saveGame(Empous.saveSlot);
-				Empous.window.setTitle("Empous");
-				Empous.window.display(Empous.menu);
-			}
-		}
-	}
-	
+
 	private class Happyometer extends JPanel{
 		int bound = 30;
 
@@ -305,15 +243,7 @@ public class InGame extends JPanel {
 		}
 		return riot;
 	}
-	
-	public void UpdateVars(){
-		happy = Empous.Gov.publicopinion;
-		cap = Empous.Gov.reserve;
-		wood = Empous.Gov.woodstock;
-		oil = Empous.Gov.oiltank;
-		pop = Empous.Gov.census;
-		jobs = Empous.Gov.employment;
-	}
+
 
 	public int Process(){
 		double delhappy;
@@ -420,5 +350,76 @@ public class InGame extends JPanel {
 			return 1;
 		}
 		return 0; //If no previous conditions met, continue playing
-	}	
+	}
+	
+	public class ButtonClick implements MouseListener {
+		
+		public void mouseClicked(MouseEvent evt) {}
+		public void mouseEntered(MouseEvent evt) {
+			if (evt.getSource()==commercial){
+				mousein = 1;
+			}
+			if (evt.getSource()==residential){
+				mousein = 2;
+			}
+			if (evt.getSource()==industrial){
+				mousein = 3;
+			}
+			if (evt.getSource()==lumbermill){
+				mousein = 4;
+			}
+			if (evt.getSource()==government){
+				mousein = 5;
+			}
+			if (evt.getSource()==turn){
+				mousein = 6;
+			}
+			if (evt.getSource()==savereturn){
+				mousein = 7;
+			}
+		}
+		public void mouseExited(MouseEvent evt) {
+			mousein=0;
+		}
+		public void mousePressed(MouseEvent evt) {}
+		public void mouseReleased(MouseEvent evt) {
+			if (mousein == 1 && evt.getSource()==commercial){
+				SubMenu Sub = new SubMenu(1);
+				Sub.showSector(Empous.Com);
+			}
+			if (mousein == 2 && evt.getSource()==residential){
+				SubMenu Sub = new SubMenu(2);
+				Sub.showSector(Empous.Res);
+			}
+			if (mousein == 3 && evt.getSource()==industrial){
+				SubMenu Sub = new SubMenu(3);
+				Sub.showSector(Empous.Ind);
+			}
+			if (mousein == 4 && evt.getSource()==lumbermill){
+				SubMenu Sub = new SubMenu(4);
+				Sub.showSector(Empous.LM);
+			}
+			if (mousein == 5 && evt.getSource()==government){
+				SubMenu Sub = new SubMenu(5);
+				Sub.showGov();
+			}
+			if (mousein == 6 && evt.getSource()==turn){
+				LoadSaveManager.saveGame(Empous.saveSlot);
+				int end=Process();
+				if(end==1){
+					Empous.winLose();
+					Empous.window.display(Empous.menu);
+				}
+				else{
+					showUpdate(0);
+				}
+			}
+			if (mousein == 7 && evt.getSource()==savereturn){
+				System.out.println("Saving and returning to menu...");
+				LoadSaveManager.saveGame(Empous.saveSlot);
+				Empous.window.setTitle("Empous");
+				Empous.window.display(Empous.menu);
+			}
+		}
+	}
 }
