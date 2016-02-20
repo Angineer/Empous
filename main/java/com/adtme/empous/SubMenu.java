@@ -543,6 +543,9 @@ public class SubMenu extends JFrame{
 		public void mousePressed(MouseEvent evt) {}
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==buysell){
+				System.out.println("Opening Buy/Sell window...");
+				BuySell bs= new BuySell(sector);
+				bs.doBuySell(Empous.Com);
 			}
 			if (mousein == 1 && evt.getSource()==newspaper){
 				System.out.println("Newspaper");

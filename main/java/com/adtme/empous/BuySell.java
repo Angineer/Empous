@@ -42,7 +42,6 @@ public class BuySell extends JFrame{
 	private GridBagConstraints c;
 	
 	private int mousein = 0;
-	private int choice = 0;
 	
 	public BuySell(int sector){
 		super(); //Create the frame
@@ -211,29 +210,6 @@ public class BuySell extends JFrame{
 		
 	    setVisible(true);
 		panel.revalidate();
-		while(isVisible()!=false){
-			if (changed==1){
-				BuySellCalc(bos, buysector);
-				changed=0;
-			}
-			if (choice==1){
-				BuySellCalc(bos, buysector);
-				Settle();
-				choice=0;
-			}
-			if (choice==2){
-				BuySellCalc(bos, buysector);
-				Settle();
-				setVisible(false); //you can't see me!
-				dispose(); //Destroy the JFrame object
-				break;
-			}
-			if (choice==3){
-				setVisible(false); //you can't see me!
-				dispose(); //Destroy the JFrame object
-				break;
-			}
-		}
 	}
 	
 	public void BuySellCalc(int buy, int sector){
@@ -449,13 +425,14 @@ public class BuySell extends JFrame{
 		public void mousePressed(MouseEvent evt) {}
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==buy){
-				choice = 1;
+				
 			}
 			if (mousein == 2 && evt.getSource()==ok){
-				choice = 2;
+				
 			}
 			if (mousein == 3 && evt.getSource()==close){
-				choice = 3;
+				setVisible(false); //you can't see me!
+				dispose(); //Destroy the JFrame object
 			}
 		}
 	}
