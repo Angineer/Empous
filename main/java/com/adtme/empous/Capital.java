@@ -84,16 +84,21 @@ public class Capital implements Serializable{
 		return resource2_level;
 	}
 	
-	public int getSmall(){
-		return small;
+	public int getQuantity(int size){
+		switch(size){
+			case(1):return small;
+			case(2):return med;
+			case(3):return large;
+			default:return 0;
+		}
 	}
-	
-	public int getMedium(){
-		return med;
-	}
-	
-	public int getLarge(){
-		return large;
+	public void setQuantity(int size, int quantity){
+		switch(size){
+			case(1):small=quantity; break;
+			case(2):med=quantity; break;
+			case(3):large=quantity; break;
+			default:break;
+		}
 	}
 
 	public int getJobs(int size){
@@ -177,6 +182,35 @@ public class Capital implements Serializable{
 		}
 	}
 
+	public int getCost(String type, int size){
+		if (type.equals("capital")){
+			switch(size){
+				case(1):return scapcost;
+				case(2):return mcapcost;
+				case(3):return lcapcost;
+				default:return 0;
+			}
+		}
+		else if (type.equals("oil")){
+			switch(size){
+				case(1):return soilcost;
+				case(2):return moilcost;
+				case(3):return loilcost;
+				default:return 0;
+			}
+		}
+		else if (type.equals("wood")){
+			switch(size){
+				case(1):return swoodcost;
+				case(2):return mwoodcost;
+				case(3):return lwoodcost;
+				default:return 0;
+			}
+		}
+		else{
+			return 0;
+		}
+	}
 
 	public double getMaxBuild(){
 		return max_build;

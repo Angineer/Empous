@@ -54,9 +54,11 @@ public class GovView extends SubMenu{
 		close.addMouseListener(buttonWatch);
 		
 		addButton(close);
+		
+		refresh();
 	}
 	
-	public void display(){
+	public void refresh(){
 		freedom = new JSlider(0,10,Empous.Gov.getGov(1));
 		military = new JSlider(0,10,Empous.Gov.getGov(2));
 		taxes = new JSlider(0,10,Empous.Gov.getGov(3));
@@ -111,8 +113,6 @@ public class GovView extends SubMenu{
 		
 		content1.setBorder(BorderFactory.createEmptyBorder(5,75,5,0));
 		content2.setBorder(BorderFactory.createEmptyBorder(5,0,5,35));
-		
-		super.display();
 	}
 	
 	public class ButtonClick implements MouseListener {

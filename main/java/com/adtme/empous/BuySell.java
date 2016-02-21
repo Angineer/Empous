@@ -21,9 +21,6 @@ public class BuySell extends JFrame{
 	private JButton buy;
 	private JButton ok;
 	private JButton close;
-	private int buysector;
-	private int bos = 1;
-	private int changed = 0;
 	private int stats[][] = new int[3][3];
 	private int sum[][] = new int[1][3];	
 	private JLabel cl1;
@@ -39,13 +36,17 @@ public class BuySell extends JFrame{
 	private JLabel jl8;
 	private JLabel jl9;
 	
+	private Capital sector;
+	
 	private GridBagConstraints c;
 	
 	private int mousein = 0;
 	
-	public BuySell(String sector){
+	public BuySell(Capital sector){
 		super(); //Create the frame
 		setTitle("Buy/Sell");
+		
+		this.sector=sector;
 		
 		ButtonClick buttonWatch = new ButtonClick();
 		Change otherWatch = new Change();
@@ -62,6 +63,14 @@ public class BuySell extends JFrame{
 	    
 	    current.add(new JLabel("Resources: "));
 	    current.setBorder(BorderFactory.createEmptyBorder(15,10,0,10));
+	    
+	    cl1 = new JLabel("Capital = ");
+		cl2 = new JLabel("Wood = ");
+		cl3 = new JLabel("Oil = ");
+	    
+	    current.add(cl1);
+		current.add(cl2);
+		current.add(cl3);
 	    
 	    subcontent1 = new JPanel();
 	    subcontent1.setBorder(BorderFactory.createEmptyBorder(15,25,15,25));
@@ -121,6 +130,40 @@ public class BuySell extends JFrame{
 		subcontent1.add(new JLabel("Wood"), c);
 		c.gridx =3;
 		subcontent1.add(new JLabel("Oil"), c);
+		
+		jl1 = new JLabel("");
+		jl2 = new JLabel("");
+		jl3 = new JLabel("");
+		jl4 = new JLabel("");
+		jl5 = new JLabel("");
+		jl6 = new JLabel("");
+		jl7 = new JLabel("");
+		jl8 = new JLabel("");
+		jl9 = new JLabel("");
+		
+		c.gridy = 1;
+		c.gridx = 1;
+		subcontent1.add(jl1, c);
+		c.gridx = 2;
+		subcontent1.add(jl2, c);
+		c.gridx = 3;
+		subcontent1.add(jl3, c);
+		
+		c.gridy = 2;
+		c.gridx = 1;
+		subcontent1.add(jl4, c);
+		c.gridx = 2;
+		subcontent1.add(jl5, c);
+		c.gridx = 3;
+		subcontent1.add(jl6, c);
+	    
+		c.gridy = 3;
+		c.gridx = 1;
+		subcontent1.add(jl7, c);
+		c.gridx = 2;
+		subcontent1.add(jl8, c);
+		c.gridx = 3;
+		subcontent1.add(jl9, c);
 	    
 	    content = new JPanel();
 	    content.setOpaque(false);
@@ -149,162 +192,41 @@ public class BuySell extends JFrame{
 	    
 	    setContentPane(panel);
 	    
+	    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
-	public void doBuySell(Capital Sector){
-		stats[0][0]=(int) Empous.Gov.reserve;
-		stats[0][1]=(int) Empous.Gov.woodstock;
-		stats[0][2]=(int) Empous.Gov.oiltank;
-		stats[1][0]=Sector.scapcost;
-		stats[1][1]=Sector.swoodcost;
-		stats[1][2]=Sector.soilcost;
-		stats[2][0]=Sector.scapcost;
-		stats[2][1]=Sector.swoodcost;
-		stats[2][2]=Sector.soilcost;
+	public void display(){
+	    refresh();
+		setVisible(true);
+	}
+	
+	public void refresh(){		
+		cl1.setText("Capital = "+stats[0][0]);
+		cl2.setText("Wood = "+stats[0][1]);
+		cl3.setText("Oil = "+stats[0][2]);
 		
-		sum[0][0]=(stats[1][0]*Integer.parseInt(buynumber.getText())-stats[2][0]*Integer.parseInt(sellnumber.getText()));
-		sum[0][1]=(stats[1][1]*Integer.parseInt(buynumber.getText())-stats[2][1]*Integer.parseInt(sellnumber.getText()));
-		sum[0][2]=(stats[1][2]*Integer.parseInt(buynumber.getText())-stats[2][2]*Integer.parseInt(sellnumber.getText()));
-		
-		cl1 = new JLabel("Capital = "+stats[0][0]);
-		cl2 = new JLabel("Wood = "+stats[0][1]);
-		cl3 = new JLabel("Oil = "+stats[0][2]);
-		
-		current.add(cl1);
-		current.add(cl2);
-		current.add(cl3);
-		
-		jl1 = new JLabel(Integer.toString(stats[1][0]));
-		jl2 = new JLabel(Integer.toString(stats[1][1]));
-		jl3 = new JLabel(Integer.toString(stats[1][2]));
-		jl4 = new JLabel(Integer.toString(stats[2][0]));
-		jl5 = new JLabel(Integer.toString(stats[2][1]));
-		jl6 = new JLabel(Integer.toString(stats[2][2]));
-		jl7 = new JLabel(Integer.toString(sum[0][0]));
-		jl8 = new JLabel(Integer.toString(sum[0][1]));
-		jl9 = new JLabel(Integer.toString(sum[0][2]));
-		
-		c.gridy = 1;
-		c.gridx = 1;
-		subcontent1.add(jl1, c);
-		c.gridx = 2;
-		subcontent1.add(jl2, c);
-		c.gridx = 3;
-		subcontent1.add(jl3, c);
-		
-		c.gridy = 2;
-		c.gridx = 1;
-		subcontent1.add(jl4, c);
-		c.gridx = 2;
-		subcontent1.add(jl5, c);
-		c.gridx = 3;
-		subcontent1.add(jl6, c);
-	    
-		c.gridy = 3;
-		c.gridx = 1;
-		subcontent1.add(jl7, c);
-		c.gridx = 2;
-		subcontent1.add(jl8, c);
-		c.gridx = 3;
-		subcontent1.add(jl9, c);
+		jl1.setText(Integer.toString(stats[1][0]));
+		jl2.setText(Integer.toString(stats[1][1]));
+		jl3.setText(Integer.toString(stats[1][2]));
+		jl4.setText(Integer.toString(stats[2][0]));
+		jl5.setText(Integer.toString(stats[2][1]));
+		jl6.setText(Integer.toString(stats[2][2]));
+		jl7.setText(Integer.toString(sum[0][0]));
+		jl8.setText(Integer.toString(sum[0][1]));
+		jl9.setText(Integer.toString(sum[0][2]));
 		
 	    setVisible(true);
 		panel.revalidate();
 	}
 	
-	public void BuySellCalc(int buy, int sector){
-		int size = 0;
+	public void BuySellCalc(int buy, int size){
 		int avail = 0;
+
+		avail=sector.getQuantity(size);
+		stats[buy][0]=sector.getCost("capital", size);
+		stats[buy][1]=sector.getCost("wood", size);
+		stats[buy][2]=sector.getCost("oil", size);
 		
-		if (sector!=0){
-			if(sector%3==0){
-				size=3;
-			}
-			else{
-				size=sector%3;
-			}
-			
-			if (sector <=3){
-				if (size==1){
-					avail=Empous.Com.small;
-					stats[buy][0]=Empous.Com.scapcost;
-					stats[buy][1]=Empous.Com.swoodcost;
-					stats[buy][2]=Empous.Com.soilcost;
-				}
-				if (size==2){
-					avail=Empous.Com.med;
-					stats[buy][0]=Empous.Com.mcapcost;
-					stats[buy][1]=Empous.Com.mwoodcost;
-					stats[buy][2]=Empous.Com.moilcost;
-				}
-				if (size==3){
-					avail=Empous.Com.large;
-					stats[buy][0]=Empous.Com.lcapcost;
-					stats[buy][1]=Empous.Com.lwoodcost;
-					stats[buy][2]=Empous.Com.loilcost;
-				}
-			}
-			else if (sector<=6){
-				if (size==1){
-					avail=Empous.Res.small;
-					stats[buy][0]=Empous.Res.scapcost;
-					stats[buy][1]=Empous.Res.swoodcost;
-					stats[buy][2]=Empous.Res.soilcost;
-				}
-				if (size==2){
-					avail=Empous.Res.med;
-					stats[buy][0]=Empous.Res.mcapcost;
-					stats[buy][1]=Empous.Res.mwoodcost;
-					stats[buy][2]=Empous.Res.moilcost;
-				}
-				if (size==3){
-					avail=Empous.Res.large;
-					stats[buy][0]=Empous.Res.lcapcost;
-					stats[buy][1]=Empous.Res.lwoodcost;
-					stats[buy][2]=Empous.Res.loilcost;
-				}
-			}
-			else if (sector<=9){
-				if (size==1){
-					avail=Empous.Ind.small;
-					stats[buy][0]=Empous.Ind.scapcost;
-					stats[buy][1]=Empous.Ind.swoodcost;
-					stats[buy][2]=Empous.Ind.soilcost;
-				}
-				if (size==2){
-					avail=Empous.Ind.med;
-					stats[buy][0]=Empous.Ind.mcapcost;
-					stats[buy][1]=Empous.Ind.mwoodcost;
-					stats[buy][2]=Empous.Ind.moilcost;
-				}
-				if (size==3){
-					avail=Empous.Ind.large;
-					stats[buy][0]=Empous.Ind.lcapcost;
-					stats[buy][1]=Empous.Ind.lwoodcost;
-					stats[buy][2]=Empous.Ind.loilcost;
-				}
-			}
-			else{
-				if (size==1){
-					avail=Empous.LM.small;
-					stats[buy][0]=Empous.LM.scapcost;
-					stats[buy][1]=Empous.LM.swoodcost;
-					stats[buy][2]=Empous.LM.soilcost;
-				}
-				if (size==2){
-					avail=Empous.LM.med;
-					stats[buy][0]=Empous.LM.mcapcost;
-					stats[buy][1]=Empous.LM.mwoodcost;
-					stats[buy][2]=Empous.LM.moilcost;
-				}
-				if (size==3){
-					avail=Empous.LM.large;
-					stats[buy][0]=Empous.LM.lcapcost;
-					stats[buy][1]=Empous.LM.lwoodcost;
-					stats[buy][2]=Empous.LM.loilcost;
-				}
-			}
-		}
 //		System.out.println("Size = "+size);
 //		System.out.println("Available = "+avail);
 		avail-=(Integer.parseInt(sellnumber.getText())-Integer.parseInt(buynumber.getText()));
@@ -313,24 +235,22 @@ public class BuySell extends JFrame{
 			avail+=Integer.parseInt(sellnumber.getText());
 			sellnumber.setText(Integer.toString(avail));
 		}
+		stats[0][0]=(int) Empous.Gov.reserve;
+		stats[0][1]=(int) Empous.Gov.woodstock;
+		stats[0][2]=(int) Empous.Gov.oiltank;
+		stats[1][0]=sector.getCost("capital", size);
+		stats[1][1]=sector.getCost("wood", size);
+		stats[1][2]=sector.getCost("oil", size);
+		stats[2][0]=sector.getCost("capital", size);
+		stats[2][1]=sector.getCost("wood", size);
+		stats[2][2]=sector.getCost("oil", size);
 		
-		jl1.setText(Integer.toString(stats[1][0]));
-		jl2.setText(Integer.toString(stats[1][1]));
-		jl3.setText(Integer.toString(stats[1][2]));
-		jl4.setText(Integer.toString(stats[2][0]));
-		jl5.setText(Integer.toString(stats[2][1]));
-		jl6.setText(Integer.toString(stats[2][2]));
-
 		sum[0][0]=(stats[1][0]*Integer.parseInt(buynumber.getText())-stats[2][0]*Integer.parseInt(sellnumber.getText()));
 		sum[0][1]=(stats[1][1]*Integer.parseInt(buynumber.getText())-stats[2][1]*Integer.parseInt(sellnumber.getText()));
 		sum[0][2]=(stats[1][2]*Integer.parseInt(buynumber.getText())-stats[2][2]*Integer.parseInt(sellnumber.getText()));
-	
-		jl7.setText(Integer.toString(sum[0][0]));
-		jl8.setText(Integer.toString(sum[0][1]));
-		jl9.setText(Integer.toString(sum[0][2]));
 	}
 	
-	public void Settle(){
+	public void settle(){
 		int btype;
 		int stype;
 		
@@ -345,33 +265,33 @@ public class BuySell extends JFrame{
 			stype=selltype.getSelectedIndex();
 			
 			switch(btype){
-				case(0): Empous.Com.small+=Integer.parseInt(buynumber.getText()); break;
-				case(1): Empous.Com.med+=Integer.parseInt(buynumber.getText()); break;
-				case(2): Empous.Com.large+=Integer.parseInt(buynumber.getText()); break;
-				case(3): Empous.Res.small+=Integer.parseInt(buynumber.getText()); break;
-				case(4): Empous.Res.med+=Integer.parseInt(buynumber.getText()); break;
-				case(5): Empous.Res.large+=Integer.parseInt(buynumber.getText()); break;
-				case(6): Empous.Ind.small+=Integer.parseInt(buynumber.getText()); break;
-				case(7): Empous.Ind.med+=Integer.parseInt(buynumber.getText()); break;
-				case(8): Empous.Ind.large+=Integer.parseInt(buynumber.getText()); break;
-				case(9): Empous.LM.large+=Integer.parseInt(buynumber.getText()); break;
-				case(10): Empous.LM.large+=Integer.parseInt(buynumber.getText()); break;
-				case(11): Empous.LM.large+=Integer.parseInt(buynumber.getText()); break;
+				case(0): Empous.Com.setQuantity(Empous.Com.getQuantity(1)+Integer.parseInt(buynumber.getText()), 1); break;
+				case(1): Empous.Com.setQuantity(Empous.Com.getQuantity(2)+Integer.parseInt(buynumber.getText()), 2); break;
+				case(2): Empous.Com.setQuantity(Empous.Com.getQuantity(3)+Integer.parseInt(buynumber.getText()), 3); break;
+				case(3): Empous.Res.setQuantity(Empous.Res.getQuantity(1)+Integer.parseInt(buynumber.getText()), 1); break;
+				case(4): Empous.Res.setQuantity(Empous.Res.getQuantity(2)+Integer.parseInt(buynumber.getText()), 2); break;
+				case(5): Empous.Res.setQuantity(Empous.Res.getQuantity(3)+Integer.parseInt(buynumber.getText()), 3); break;
+				case(6): Empous.Ind.setQuantity(Empous.Ind.getQuantity(1)+Integer.parseInt(buynumber.getText()), 1); break;
+				case(7): Empous.Ind.setQuantity(Empous.Ind.getQuantity(2)+Integer.parseInt(buynumber.getText()), 2); break;
+				case(8): Empous.Ind.setQuantity(Empous.Ind.getQuantity(3)+Integer.parseInt(buynumber.getText()), 3); break;
+				case(9): Empous.LM.setQuantity(Empous.LM.getQuantity(1)+Integer.parseInt(buynumber.getText()), 1); break;
+				case(10): Empous.LM.setQuantity(Empous.LM.getQuantity(2)+Integer.parseInt(buynumber.getText()), 2); break;
+				case(11): Empous.LM.setQuantity(Empous.LM.getQuantity(3)+Integer.parseInt(buynumber.getText()), 3); break;
 			}
 			
 			switch(stype){
-				case(0): Empous.Com.small-=Integer.parseInt(sellnumber.getText()); break;
-				case(1): Empous.Com.med-=Integer.parseInt(sellnumber.getText()); break;
-				case(2): Empous.Com.large-=Integer.parseInt(sellnumber.getText()); break;
-				case(3): Empous.Res.small-=Integer.parseInt(sellnumber.getText()); break;
-				case(4): Empous.Res.med-=Integer.parseInt(sellnumber.getText()); break;
-				case(5): Empous.Res.large-=Integer.parseInt(sellnumber.getText()); break;
-				case(6): Empous.Ind.small-=Integer.parseInt(sellnumber.getText()); break;
-				case(7): Empous.Ind.med-=Integer.parseInt(sellnumber.getText()); break;
-				case(8): Empous.Ind.large-=Integer.parseInt(sellnumber.getText()); break;
-				case(9): Empous.LM.large-=Integer.parseInt(sellnumber.getText()); break;
-				case(10): Empous.LM.large-=Integer.parseInt(sellnumber.getText()); break;
-				case(11): Empous.LM.large-=Integer.parseInt(sellnumber.getText()); break;
+				case(0): Empous.Com.setQuantity(Empous.Com.getQuantity(1)-Integer.parseInt(sellnumber.getText()), 1); break;
+				case(1): Empous.Com.setQuantity(Empous.Com.getQuantity(2)-Integer.parseInt(sellnumber.getText()), 2); break;
+				case(2): Empous.Com.setQuantity(Empous.Com.getQuantity(3)-Integer.parseInt(sellnumber.getText()), 3); break;
+				case(3): Empous.Res.setQuantity(Empous.Res.getQuantity(1)-Integer.parseInt(sellnumber.getText()), 1); break;
+				case(4): Empous.Res.setQuantity(Empous.Res.getQuantity(2)-Integer.parseInt(sellnumber.getText()), 2); break;
+				case(5): Empous.Res.setQuantity(Empous.Res.getQuantity(3)-Integer.parseInt(sellnumber.getText()), 3); break;
+				case(6): Empous.Ind.setQuantity(Empous.Ind.getQuantity(1)-Integer.parseInt(sellnumber.getText()), 1); break;
+				case(7): Empous.Ind.setQuantity(Empous.Ind.getQuantity(2)-Integer.parseInt(sellnumber.getText()), 2); break;
+				case(8): Empous.Ind.setQuantity(Empous.Ind.getQuantity(3)-Integer.parseInt(sellnumber.getText()), 3); break;
+				case(9): Empous.LM.setQuantity(Empous.LM.getQuantity(1)-Integer.parseInt(sellnumber.getText()), 1); break;
+				case(10): Empous.LM.setQuantity(Empous.LM.getQuantity(2)-Integer.parseInt(sellnumber.getText()), 2); break;
+				case(11): Empous.LM.setQuantity(Empous.LM.getQuantity(3)-Integer.parseInt(sellnumber.getText()), 3); break;
 			}
 			
 		}
@@ -392,17 +312,14 @@ public class BuySell extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 			if (evt.getSource()==buytype || evt.getSource()==buynumber){
-				buysector = buytype.getSelectedIndex()+1;
-				bos=1;
+				refresh();
 			}
 			if (evt.getSource()==selltype || evt.getSource()==sellnumber){
-				buysector = selltype.getSelectedIndex()+1;
-				bos=2;
+				refresh();
 			}
-//			if (evt.getSource()==buynumber || evt.getSource()==sellnumber){
-//				buysector = 0;
-//			}
-			changed=1;
+			if (evt.getSource()==buynumber || evt.getSource()==sellnumber){
+				refresh();
+			}
 		}
 	}
 	
@@ -425,10 +342,13 @@ public class BuySell extends JFrame{
 		public void mousePressed(MouseEvent evt) {}
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==buy){
-				
+				settle();
+				refresh();
 			}
 			if (mousein == 2 && evt.getSource()==ok){
-				
+				settle();
+				setVisible(false); //you can't see me!
+				dispose(); //Destroy the JFrame object
 			}
 			if (mousein == 3 && evt.getSource()==close){
 				setVisible(false); //you can't see me!

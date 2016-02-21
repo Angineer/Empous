@@ -49,15 +49,17 @@ public class SectorView extends SubMenu{
 	
 	private ButtonClick buttonWatch;
 	private int mousein = 0;
+	private Capital sector;
 	private String sectorstr;
 	
 	private int[][] stats = new int[5][3];
 	private int[][] sum = new int[1][4];
 
-	public SectorView(Capital sector) {
+	public SectorView(Capital targetSector) {
 		super();
 		buttonWatch = new ButtonClick();
 		
+		sector=targetSector;
 		sectorstr=sector.getType();
 		setTitle("Sector View - " + sectorstr);
 		
@@ -108,9 +110,11 @@ public class SectorView extends SubMenu{
 		
 		addButton(buysell);
 		addButton(close);
+		
+		refresh();
 	}
 	
-	public void display(){
+	public void refresh(){
 		content1.setLayout(new GridBagLayout());
 		content2.setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
@@ -186,30 +190,7 @@ public class SectorView extends SubMenu{
 		c.gridx = 4;
 		content2.add(jl16, c);
 		
-		super.display();
-	}
-	
-	public void generateView(Capital Sector){
-		stats[0][0]=Sector.getSmall();
-		stats[0][1]=Sector.getMedium();
-		stats[0][2]=Sector.getLarge();
-		stats[1][0]=Sector.getJobs(1);
-		stats[1][1]=Sector.getJobs(2);
-		stats[1][2]=Sector.getJobs(3);
-		stats[2][0]=Sector.getCap(1);
-		stats[2][1]=Sector.getCap(2);
-		stats[2][2]=Sector.getCap(3);
-		stats[3][0]=Sector.getOil(1);
-		stats[3][1]=Sector.getOil(2);
-		stats[3][2]=Sector.getOil(3);
-		stats[4][0]=Sector.getWood(1);
-		stats[4][1]=Sector.getWood(2);
-		stats[4][2]=Sector.getWood(3);
-		
-		sum[0][0]=stats[0][0]*stats[1][0]+stats[0][1]*stats[1][1]+stats[0][2]*stats[1][2];
-		sum[0][1]=stats[0][0]*stats[2][0]+stats[0][1]*stats[2][1]+stats[0][2]*stats[2][2];
-		sum[0][2]=stats[0][0]*stats[3][0]+stats[0][1]*stats[3][1]+stats[0][2]*stats[3][2];
-		sum[0][3]=stats[0][0]*stats[4][0]+stats[0][1]*stats[4][1]+stats[0][2]*stats[4][2];
+		calcStats();
 		
 		jla.setText("       "+stats[0][0]+" Small "+sectorstr+" Units");
 		jlb.setText("       "+stats[0][1]+" Medium "+sectorstr+" Units");
@@ -233,6 +214,29 @@ public class SectorView extends SubMenu{
 		jl16.setText(Integer.toString(sum[0][3]));
 	}
 	
+	public void calcStats(){
+		stats[0][0]=sector.getQuantity(1);
+		stats[0][1]=sector.getQuantity(2);
+		stats[0][2]=sector.getQuantity(3);
+		stats[1][0]=sector.getJobs(1);
+		stats[1][1]=sector.getJobs(2);
+		stats[1][2]=sector.getJobs(3);
+		stats[2][0]=sector.getCap(1);
+		stats[2][1]=sector.getCap(2);
+		stats[2][2]=sector.getCap(3);
+		stats[3][0]=sector.getOil(1);
+		stats[3][1]=sector.getOil(2);
+		stats[3][2]=sector.getOil(3);
+		stats[4][0]=sector.getWood(1);
+		stats[4][1]=sector.getWood(2);
+		stats[4][2]=sector.getWood(3);
+		
+		sum[0][0]=stats[0][0]*stats[1][0]+stats[0][1]*stats[1][1]+stats[0][2]*stats[1][2];
+		sum[0][1]=stats[0][0]*stats[2][0]+stats[0][1]*stats[2][1]+stats[0][2]*stats[2][2];
+		sum[0][2]=stats[0][0]*stats[3][0]+stats[0][1]*stats[3][1]+stats[0][2]*stats[3][2];
+		sum[0][3]=stats[0][0]*stats[4][0]+stats[0][1]*stats[4][1]+stats[0][2]*stats[4][2];
+	}
+	
 	public class ButtonClick implements MouseListener {
 		public void mouseClicked(MouseEvent evt) {
 		}
@@ -251,8 +255,8 @@ public class SectorView extends SubMenu{
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==buysell){
 				System.out.println("Opening Buy/Sell window...");
-				BuySell bs= new BuySell(sectorstr);
-				bs.doBuySell(Empous.Com);
+				BuySell bs= new BuySell(Empous.Com);
+				bs.display();
 			}
 			if (mousein == 2 && evt.getSource()==close){
 				setVisible(false); //you can't see me!

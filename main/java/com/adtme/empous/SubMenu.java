@@ -62,8 +62,8 @@ public class SubMenu extends JFrame{
 	public void setContentLayout(LayoutManager layout){
 		content.setLayout(layout);
 	}
-	public void addContent(Component content){
-		this.content.add(content);
+	public void addContent(Component comp){
+		content.add(comp);
 	}
 	public void addButton(JButton button){
 		buttons.add(button);

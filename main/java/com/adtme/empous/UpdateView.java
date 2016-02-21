@@ -17,7 +17,7 @@ public class UpdateView extends SubMenu{
 	private ButtonClick buttonWatch;
 	private int mousein = 0;
 
-	public UpdateView() {
+	public UpdateView(int newGame) {
 		super();
 		setTitle("Update");
 		buttonWatch = new ButtonClick();
@@ -39,12 +39,14 @@ public class UpdateView extends SubMenu{
 		addButton(newspaper);
 		addButton(map);
 		addButton(close);
+		
+		refresh(newGame);
 	}
 	
-	public void display(int firstupdate){
+	public void refresh(int newGame){
 		String line1 = "", line2 = "", line3 = "";
 		//jenn.setFont(description.getFont());
-		if (firstupdate==1){
+		if (newGame==1){
 			setDescription("src/main/resources/images/JennIcon.png", "Hi! My name is Jennifer.");
 			jenn.setText("I'm your administrative assistant and I'm " +
 					"glad to welcome you to the mayor's office! I will be here to keep you up " +
@@ -64,7 +66,12 @@ public class UpdateView extends SubMenu{
 			
 			jenn.setText(line1+"\n\n"+line2+"\n\n"+line3);
 			
-			if(Empous.Gov.publicopinion<=10){
+			if(Empous.Gov.publicopinion==0){
+				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is DESTROYED");
+				jenn.setText("Despite your best efforts, your dream of an empire that ruled the world has " +
+				"come to a bitter, fruitless end. \n\n It has been an honor serving you, mayor.");
+			}
+			else if(Empous.Gov.publicopinion<=10){
 				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is ABYSMAL");
 			}
 			else if(Empous.Gov.publicopinion<=25){
@@ -82,15 +89,19 @@ public class UpdateView extends SubMenu{
 			else if(Empous.Gov.publicopinion<=100){
 				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is UTOPIAN");
 			}
-			
-			if (Empous.Gov.riotstate!=0){
+			else if(Empous.Gov.publicopinion>100){
+				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is COMPLETE");
+				jenn.setText("You did it! Your hard work and perseverence have paid off and your empire " +
+				"now governs all of human existence. Who knew this would be so rewarding?");
+			}
+			// TODO fix hierarchy of text
+			/*if (Empous.Gov.riotstate!=0){
 				jenn.setText("YOUR CITIZENS ARE RIOTING! IMPROVE THE SITUATION QUICK!\n\n" +
 						"If you don't make some good changes, there is no saying what will become " +
 						"of your empire's stability! You can always increase the military for now, " +
 						"but there is no substitute for fixing the underlying causes!");
-			}
+			}*/
 		}
-		super.display();
 	}
 	
 	public String suggest(int line){

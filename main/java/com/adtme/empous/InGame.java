@@ -139,8 +139,8 @@ public class InGame extends JPanel {
 	public void showUpdate(int newGame){
 		System.out.println("Showing new update...");
 		generateView();
-		UpdateView update = new UpdateView();
-		update.display(newGame);
+		UpdateView update = new UpdateView(newGame);
+		update.display();
 	}
 	
 	public void updateVars(){
