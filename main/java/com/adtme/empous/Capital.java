@@ -10,18 +10,20 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class Capital implements Serializable{
-	public int max_build, resource1, resource2, resource1_level, resource2_level; //Stats about the type of capital
-	public int sgenrate1, mgenrate1, lgenrate1;
-	public int sgenrate2, mgenrate2, lgenrate2;
-	public int scapcost, mcapcost, lcapcost;
-	public int swoodcost, mwoodcost, lwoodcost;
-	public int soilcost, moilcost, loilcost;
-	public int small, med, large; //Number of components of each size
-	public double build_rate;
-	public double build_level;
+	private String type = "Capital";
+	private int max_build, resource1, resource2, resource1_level, resource2_level; //Stats about the type of capital
+	private int sgenrate1, mgenrate1, lgenrate1;
+	private int sgenrate2, mgenrate2, lgenrate2;
+	private int scapcost, mcapcost, lcapcost;
+	private int swoodcost, mwoodcost, lwoodcost;
+	private int soilcost, moilcost, loilcost;
+	private int small, med, large; //Number of components of each size
+	private double build_rate;
+	private double build_level;
 	
-	public Capital(int a1, int a2, int b1, int b2, int b3, int b4, int b5, int b6, double c, int d, 
+	public Capital(String type, int a1, int a2, int b1, int b2, int b3, int b4, int b5, int b6, double c, int d, 
 			int e1, int e2, int e3,	int f1, int f2, int f3, int g1, int g2, int g3){	//Constructor
+		this.type=type;
 		resource1=a1;	//Set dynamic resource
 		if (a2!=-1){	//Set proportional resource
 			resource2=a2;	
@@ -175,4 +177,23 @@ public class Capital implements Serializable{
 		}
 	}
 
+
+	public double getMaxBuild(){
+		return max_build;
+	}
+	public void setBuildRate(double newRate){
+		build_rate=newRate;
+	}
+	public double getBuildRate(){
+		return build_rate;
+	}
+	public void setBuildLevel(double newLevel){
+		build_level=newLevel;
+	}
+	public double getBuildLevel(){
+		return build_level;
+	}
+	public String getType(){
+		return type;
+	}
 }

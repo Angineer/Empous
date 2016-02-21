@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,7 +20,6 @@ public class SectorView extends SubMenu{
 	private JLabel jla = new JLabel();
 	private JLabel jlb = new JLabel();
 	private JLabel jlc = new JLabel();
-	
 	private JLabel jl1 = new JLabel();
 	private JLabel jl2 = new JLabel();
 	private JLabel jl3 = new JLabel();
@@ -39,35 +37,48 @@ public class SectorView extends SubMenu{
 	private JLabel jl15 = new JLabel();
 	private JLabel jl16 = new JLabel();
 	
+	private GridBagConstraints c;
+	
+	private JPanel overpanel;
+	private JPanel lines;
+	private JPanel content1;
+	private JPanel content2;
+	
 	private JButton buysell;
 	private JButton close;
 	
+	private ButtonClick buttonWatch;
 	private int mousein = 0;
+	private String sectorstr;
+	
+	private int[][] stats = new int[5][3];
+	private int[][] sum = new int[1][4];
 
-	public SectorView(int sector) {
+	public SectorView(Capital sector) {
 		super();
-		if (sector==1){
-			setTitle("Sector View - Commercial");
-			icon = new ImageIcon("src/main/resources/images/ComIcon.png");
-			sectorstr = "Commercial";
-		}
-		else if (sector==2){
-			setTitle("Sector View - Residential");
-			icon = new ImageIcon("src/main/resources/images/ResIcon.png");
-			sectorstr = "Residential";
-		}
-		else if (sector==3){
-			setTitle("Sector View - Industrial");
-			icon = new ImageIcon("src/main/resources/images/IndIcon.png");
-			sectorstr = "Industrial";
-		}
-		else if (sector==4){
-			setTitle("Sector View - Lumber Mills");
-			icon = new ImageIcon("src/main/resources/images/LumberIcon.png");
-			sectorstr = "Lumber Mill";
-		}
-		DescColor = Color.GRAY;
+		buttonWatch = new ButtonClick();
 		
+		sectorstr=sector.getType();
+		setTitle("Sector View - " + sectorstr);
+		
+		// Description
+		if (sectorstr.equals("Commercial")){
+			setDescription("src/main/resources/images/ComIcon.png", "<html>The Commercial sector provides jobs for your hardworking citizens, " +
+					"and frivolous spending for your rich ones.</html>");
+		}
+		else if (sectorstr.equals("Residential")){
+			setDescription("src/main/resources/images/ResIcon.png", "<html>The Residential sector provides a place for your citizens to rest " +
+					"their weary heads.</html>");
+		}
+		else if (sectorstr.equals("Industrial")){
+			setDescription("src/main/resources/images/IndIcon.png", "<html>The Industrial sector provides necessary jobs and produces the widgets " +
+					"that power the modern economy.</html>");
+		}
+		else if (sectorstr.equals("Lumber")){
+			setDescription("src/main/resources/images/LumberIcon.png", "<html>What great empire could exist without lumber mills???</html>");
+		}
+		
+		// Overlaid content
 		overpanel = new JPanel();
 		overpanel.setLayout(new OverlayLayout(overpanel));
 		
@@ -78,14 +89,18 @@ public class SectorView extends SubMenu{
 		
 		overpanel.add(lines);
 		
-		content.setLayout(new GridLayout(1,2));
-		subcontent1 = new JPanel();
-		subcontent2 = new JPanel();
+		// Content
+		setContentLayout(new GridLayout(1,2));
+		addContent(overpanel);
+		content1 = new JPanel();
+		content2 = new JPanel();
 		
-		overpanel.add(subcontent2);
-		content.add(subcontent1);
-		content.add(overpanel);
+		overpanel.add(content2);
 		
+		addContent(content1);
+		addContent(overpanel);
+		
+		// Buttons
 		buysell = new JButton("Buy/Sell");
 		buysell.addMouseListener(buttonWatch);
 		close = new JButton("Close");
@@ -96,102 +111,82 @@ public class SectorView extends SubMenu{
 	}
 	
 	public void display(){
-		super.display();
-		if (sector==1){
-			description.setText("<html>The Commercial sector provides jobs for your hardworking citizens, " +
-					"and frivolous spending for your rich ones.</html>");
-		}
-		if (sector==2){
-			description.setText("<html>The Residential sector provides a place for your citizens to rest " +
-					"their weary heads.</html>");
-		}
-		if (sector==3){
-			description.setText("<html>The Industrial sector provides necessary jobs and produces the widgets " +
-					"that power the modern economy.</html>");
-		}
-		if (sector==4){
-			description.setText("<html>What great empire could exist without lumber mills???</html>");
-		}
-		
-		subcontent1.setLayout(new GridBagLayout());
-		subcontent2.setLayout(new GridBagLayout());
+		content1.setLayout(new GridBagLayout());
+		content2.setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
-		
-		generateView(Sector);
 		
 		c.gridx = 0;
 		c.weighty = 0.2;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.WEST;
-		subcontent1.add(new JLabel("Your empire has"), c);
+		content1.add(new JLabel("Your empire has"), c);
 		c.gridy = 1;
-		subcontent1.add(jla, c);
+		content1.add(jla, c);
 		c.gridy = 2;
-		subcontent1.add(jlb, c);
+		content1.add(jlb, c);
 		c.gridy = 3;
-		subcontent1.add(jlc, c);
+		content1.add(jlc, c);
 		c.gridy = 4;
-		subcontent1.add(new JLabel("Total Resources Generated:"), c);
+		content1.add(new JLabel("Total Resources Generated:"), c);
 		
 		c.weightx = 0.5;
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridy = 0;
-		subcontent2.add(new JPanel(), c);
+		content2.add(new JPanel(), c);
 		c.gridx = 1;
-		subcontent2.add(new JLabel("<html>Jobs</html>"), c);
+		content2.add(new JLabel("<html>Jobs</html>"), c);
 		c.gridx = 2;
-		subcontent2.add(new JLabel("<html>Capital</html>"), c);
+		content2.add(new JLabel("<html>Capital</html>"), c);
 		c.gridx = 3;
-		subcontent2.add(new JLabel("<html>Oil</html>"), c);
+		content2.add(new JLabel("<html>Oil</html>"), c);
 		c.gridx = 4;
-		subcontent2.add(new JLabel("<html>Wood</html>"), c);
+		content2.add(new JLabel("<html>Wood</html>"), c);
 		c.gridy = 1;
 		c.gridx = 0;
-		subcontent2.add(new JLabel("X"), c);
+		content2.add(new JLabel("X"), c);
 		c.gridx = 1;
-		subcontent2.add(jl1, c);
+		content2.add(jl1, c);
 		c.gridx = 2;
-		subcontent2.add(jl2, c);
+		content2.add(jl2, c);
 		c.gridx = 3;
-		subcontent2.add(jl3, c);
+		content2.add(jl3, c);
 		c.gridx = 4;
-		subcontent2.add(jl4, c);
+		content2.add(jl4, c);
 		c.gridy = 2;
 		c.gridx = 0;
-		subcontent2.add(new JLabel("X"), c);
+		content2.add(new JLabel("X"), c);
 		c.gridx = 1;
-		subcontent2.add(jl5, c);
+		content2.add(jl5, c);
 		c.gridx = 2;
-		subcontent2.add(jl6, c);
+		content2.add(jl6, c);
 		c.gridx = 3;
-		subcontent2.add(jl7, c);
+		content2.add(jl7, c);
 		c.gridx = 4;
-		subcontent2.add(jl8, c);
+		content2.add(jl8, c);
 		c.gridy = 3;
 		c.gridx = 0;
-		subcontent2.add(new JLabel("X"), c);
+		content2.add(new JLabel("X"), c);
 		c.gridx = 1;
-		subcontent2.add(jl9, c);
+		content2.add(jl9, c);
 		c.gridx = 2;
-		subcontent2.add(jl10, c);
+		content2.add(jl10, c);
 		c.gridx = 3;
-		subcontent2.add(jl11, c);
+		content2.add(jl11, c);
 		c.gridx = 4;
-		subcontent2.add(jl12, c);
+		content2.add(jl12, c);
 		c.gridy = 4;
 		c.gridx = 0;
-		subcontent2.add(new JPanel(), c);
+		content2.add(new JPanel(), c);
 		c.gridx = 1;
-		subcontent2.add(jl13, c);
+		content2.add(jl13, c);
 		c.gridx = 2;
-		subcontent2.add(jl14, c);
+		content2.add(jl14, c);
 		c.gridx = 3;
-		subcontent2.add(jl15, c);
+		content2.add(jl15, c);
 		c.gridx = 4;
-		subcontent2.add(jl16, c);
+		content2.add(jl16, c);
 		
-		setVisible(true);
-		panel.revalidate();
+		super.display();
 	}
 	
 	public void generateView(Capital Sector){
@@ -256,7 +251,7 @@ public class SectorView extends SubMenu{
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==buysell){
 				System.out.println("Opening Buy/Sell window...");
-				BuySell bs= new BuySell(sector);
+				BuySell bs= new BuySell(sectorstr);
 				bs.doBuySell(Empous.Com);
 			}
 			if (mousein == 2 && evt.getSource()==close){

@@ -1,12 +1,8 @@
 package main.java.com.adtme.empous;
 
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class UpdateView extends SubMenu{
@@ -17,17 +13,14 @@ public class UpdateView extends SubMenu{
 	private JButton map;
 	private JButton close;
 	private JTextArea jenn;
-	private JPanel lines;
 	
+	private ButtonClick buttonWatch;
 	private int mousein = 0;
 
-	public UpdateView(int input) {
+	public UpdateView() {
 		super();
 		setTitle("Update");
-		icon = new ImageIcon("src/main/resources/images/JennIcon.png");
-		sectorstr = "Update";
-		
-		DescColor = Color.BLACK;
+		buttonWatch = new ButtonClick();
 		
 		newspaper = new JButton("Newspaper");
 		newspaper.addMouseListener(buttonWatch);
@@ -36,22 +29,23 @@ public class UpdateView extends SubMenu{
 		close = new JButton("Close");
 		close.addMouseListener(buttonWatch);
 		
-		buttons.add(newspaper);
-		buttons.add(map);
-		buttons.add(close);
-	}
-	
-	public void display(int firstupdate){
-		String line1 = "", line2 = "", line3 = "";
 		jenn = new JTextArea();
 		jenn.setLineWrap(true);
 		jenn.setWrapStyleWord(true);
 		jenn.setEditable(false);
 		jenn.setSize(420, 200);
-		jenn.setFont(description.getFont());
+		addContent(jenn);
+		
+		addButton(newspaper);
+		addButton(map);
+		addButton(close);
+	}
+	
+	public void display(int firstupdate){
+		String line1 = "", line2 = "", line3 = "";
+		//jenn.setFont(description.getFont());
 		if (firstupdate==1){
-			System.out.println("Welcome to the game...");
-			description.setText("Hi! My name is Jennifer.");
+			setDescription("src/main/resources/images/JennIcon.png", "Hi! My name is Jennifer.");
 			jenn.setText("I'm your administrative assistant and I'm " +
 					"glad to welcome you to the mayor's office! I will be here to keep you up " +
 					"to date on the events in your empire and give you suggestions on how you " +
@@ -71,22 +65,22 @@ public class UpdateView extends SubMenu{
 			jenn.setText(line1+"\n\n"+line2+"\n\n"+line3);
 			
 			if(Empous.Gov.publicopinion<=10){
-				description.setText("Your empire's status is ABYSMAL");
+				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is ABYSMAL");
 			}
 			else if(Empous.Gov.publicopinion<=25){
-				description.setText("Your empire's status is TERRIBLE");
+				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is TERRIBLE");
 			}
 			else if(Empous.Gov.publicopinion<=50){
-				description.setText("Your empire's status is BAD");
+				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is BAD");
 			}
 			else if(Empous.Gov.publicopinion<=75){
-				description.setText("Your empire's status is GOOD");
+				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is GOOD");
 			}
 			else if(Empous.Gov.publicopinion<=90){
-				description.setText("Your empire's status is GREAT");
+				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is GREAT");
 			}
 			else if(Empous.Gov.publicopinion<=100){
-				description.setText("Your empire's status is UTOPIAN");
+				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is UTOPIAN");
 			}
 			
 			if (Empous.Gov.riotstate!=0){
@@ -96,11 +90,7 @@ public class UpdateView extends SubMenu{
 						"but there is no substitute for fixing the underlying causes!");
 			}
 		}
-		content.add(jenn);
-		
-		setVisible(true);
-		panel.revalidate();
-		panel.repaint();
+		super.display();
 	}
 	
 	public String suggest(int line){
@@ -154,13 +144,10 @@ public class UpdateView extends SubMenu{
 	public class ButtonClick implements MouseListener {
 		public void mouseClicked(MouseEvent evt) {
 			if (evt.getSource()==mapimage){
-				setContentPane(panel);
+				//setContentPane(panel);
 			}
 		}
 		public void mouseEntered(MouseEvent evt) {
-			if (evt.getSource()==buysell){
-				mousein = 1;
-			}
 			if (evt.getSource()==newspaper){
 				mousein = 1;
 			}
@@ -170,41 +157,19 @@ public class UpdateView extends SubMenu{
 			if (evt.getSource()==close){
 				mousein = 3;
 			}
-			if (evt.getSource()==govClose){
-				mousein = 4;
-			}
 		}
 		public void mouseExited(MouseEvent evt) {
 			mousein=0;
 		}
 		public void mousePressed(MouseEvent evt) {}
 		public void mouseReleased(MouseEvent evt) {
-			if (mousein == 1 && evt.getSource()==buysell){
-				System.out.println("Opening Buy/Sell window...");
-				BuySell bs= new BuySell(sector);
-				bs.doBuySell(Empous.Com);
-			}
 			if (mousein == 1 && evt.getSource()==newspaper){
 				System.out.println("Newspaper");
 			}
 			if (mousein == 2 && evt.getSource()==map){
-				showMap();
+				//showMap();
 			}
 			if (mousein == 3 && evt.getSource()==close){
-				setVisible(false); //you can't see me!
-				dispose(); //Destroy the JFrame object
-			}
-			if (mousein == 4 && evt.getSource()==govClose){
-				Empous.Gov.setGov(1, freedom.getValue());
-				Empous.Gov.setGov(2, military.getValue());
-				Empous.Gov.setGov(3, taxes.getValue());
-				Empous.Gov.setGov(4, education.getValue());
-				Empous.Gov.setGov(5, infrastructure.getValue());
-				Empous.Gov.setGov(6, environment.getValue());
-				Empous.Gov.setGov(7, sciencetech.getValue());
-				Empous.Gov.setGov(8, healthcare.getValue());
-				Empous.Gov.setGov(9, admin.getValue());
-				Empous.Gov.setMJ(mjbox.isSelected());
 				setVisible(false); //you can't see me!
 				dispose(); //Destroy the JFrame object
 			}

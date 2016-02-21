@@ -43,7 +43,7 @@ public class BuySell extends JFrame{
 	
 	private int mousein = 0;
 	
-	public BuySell(int sector){
+	public BuySell(String sector){
 		super(); //Create the frame
 		setTitle("Buy/Sell");
 		
@@ -98,11 +98,11 @@ public class BuySell extends JFrame{
 	    
 	    buytype = new JComboBox(list);
 	    buytype.setBackground(Color.WHITE);
-	    buytype.setSelectedIndex(sector*3-3);
+	    buytype.setSelectedIndex(2*3-3);
 	    buytype.addActionListener(otherWatch);
 	    selltype = new JComboBox(list);
 	    selltype.setBackground(Color.WHITE);
-	    selltype.setSelectedIndex(sector*3-3);
+	    selltype.setSelectedIndex(2*3-3);
 	    selltype.addActionListener(otherWatch);
 	    
 	    subcontent11.add(new JLabel("Buy "));

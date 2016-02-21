@@ -1,6 +1,7 @@
 package main.java.com.adtme.empous;
 
 import java.awt.*;
+
 import javax.swing.*;
 
 @SuppressWarnings("serial")
@@ -8,11 +9,10 @@ public class SubMenu extends JFrame{
 	private JPanel panel;
 	private JPanel content;
 	private JLabel description;
-	private JPanel overpanel;
 	private JPanel buttons;
+	private ImageIcon icon;
 	
-	int[][] stats = new int[5][3];
-	int[][] sum = new int[1][4];
+	Color DescColor = Color.GRAY;
 
 	public SubMenu(){
 		super(); //Create the frame
@@ -23,24 +23,21 @@ public class SubMenu extends JFrame{
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 	    setLocation( (screensize.width - getWidth())/2, (screensize.height - getHeight())/2); // Put it in the middle
 		
-	    buttons = new JPanel();
-	    buttons.setOpaque(false);
-	    content = new JPanel();
-		content.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-		content.setOpaque(false);
-		
-		overpanel = new JPanel();
-		overpanel.setLayout(new OverlayLayout(overpanel));
-		
-		panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.setOpaque(false);
-		
-		description = new JLabel();
+	    // Components
+	    description = new JLabel();
 		description.setIconTextGap(10);
 		description.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		description.setHorizontalAlignment(JLabel.LEFT);
+		content = new JPanel();
+		content.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		content.setOpaque(false);
+		buttons = new JPanel();
+	    buttons.setOpaque(false);
 		
+	    // Component holder
+		panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.setOpaque(false);
 		panel.add(description, BorderLayout.NORTH);
 		panel.add(content, BorderLayout.CENTER);
 		panel.add(buttons, BorderLayout.SOUTH);
@@ -51,16 +48,22 @@ public class SubMenu extends JFrame{
 	}
 	
 	public void display(){
-		System.out.println("Generating sub-menu");		
+		System.out.println("Sub-menu generated!");
+		setVisible(true);
+		panel.revalidate();
 	}
 	
-	public void setDescription(ImageIcon icon, String text, Color color){
+	public void setDescription(String iconPath, String text){
+		icon = new ImageIcon(iconPath);
 		description.setIcon(icon);
 		description.setText(text);
-		description.setForeground(color);
+		description.setForeground(DescColor);
 	}
-	public void addContent(JPanel content){
-		content.add(content);
+	public void setContentLayout(LayoutManager layout){
+		content.setLayout(layout);
+	}
+	public void addContent(Component content){
+		this.content.add(content);
 	}
 	public void addButton(JButton button){
 		buttons.add(button);

@@ -49,9 +49,10 @@ public class Splash extends JPanel implements Runnable{
 				remove(title1);
 				repaint();
             }     
-            try { Thread.sleep(250); }
+            try { Thread.sleep(200); }
             catch(InterruptedException ie) { }
 		}
+		System.out.println(SwingUtilities.isEventDispatchThread());
 		System.out.println("Animation done...");
 	}
 	

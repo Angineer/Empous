@@ -2,8 +2,11 @@ package main.java.com.adtme.empous;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  * Empous
@@ -47,10 +50,17 @@ public class Empous {
 		// Splash screen
 		System.out.println("Splash screen...");
 		window.display(Empous.splash);
-		Thread t = new Thread(Empous.splash); // Create thread to run animation
-		t.start(); // Start thread
-		try{ t.join(); } // Wait for thread to finish
-		catch(InterruptedException ie){	}
+		// Run splash animation on EDT
+		// TODO Fix this thing so it's thread safe and still runs
+		try {
+			SwingUtilities.invokeAndWait(Empous.splash);
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// Display main menu
 		System.out.println("Main menu...");

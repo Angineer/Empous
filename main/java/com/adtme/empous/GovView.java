@@ -1,12 +1,10 @@
 package main.java.com.adtme.empous;
 
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -27,26 +25,35 @@ public class GovView extends SubMenu{
 	private JSlider admin;
 	private JCheckBox mjbox;
 	
+	private JPanel content1;
+	private JPanel content2;
+	
+	private JButton close;
+	
+	private ButtonClick buttonWatch;
 	private int mousein = 0;
 
-	public GovView(int input, ImageIcon icon) {
+	public GovView() {
 		super();
+		buttonWatch = new ButtonClick();
+		
 		setTitle("Sector View - Government");
-		icon = new ImageIcon("src/main/resources/images/GovIcon.png");
-		sectorstr = "Government";
 		
-		DescColor = Color.GRAY;
+		setDescription("src/main/resources/images/GovIcon.png", "<html>The Government makes the laws and set the policies that tell " +
+				"your citizens what they can and can't do.</html>");
 		
-		content.setLayout(new GridLayout(1,2));
-		subcontent1 = new JPanel();
-		subcontent2 = new JPanel();
-		content.add(subcontent1);
-		content.add(subcontent2);
+		setContentLayout(new GridLayout(1,2));
+		content1 = new JPanel();
+		content2 = new JPanel();
+		content1.setLayout(new GridLayout(10,1));
+		content2.setLayout(new GridLayout(10,1));
+		addContent(content1);
+		addContent(content2);
 		
-		govClose = new JButton("Close");
-		govClose.addMouseListener(buttonWatch);
+		close = new JButton("Close");
+		close.addMouseListener(buttonWatch);
 		
-		buttons.add(govClose);
+		addButton(close);
 	}
 	
 	public void display(){
@@ -60,12 +67,6 @@ public class GovView extends SubMenu{
 		healthcare = new JSlider(0,10,Empous.Gov.getGov(8));
 		admin = new JSlider(0,10,Empous.Gov.getGov(9));
 		mjbox = new JCheckBox("",Empous.Gov.getMJ());
-		
-		description.setText("<html>The Government makes the laws and set the policies that tell " +
-			"your citizens what they can and can't do.</html>");
-		
-		subcontent1.setLayout(new GridLayout(10,1));
-		subcontent2.setLayout(new GridLayout(10,1));
 		
 		freedom.setMajorTickSpacing(1);
 		freedom.setSnapToTicks(true);
@@ -86,56 +87,39 @@ public class GovView extends SubMenu{
 		admin.setMajorTickSpacing(1);
 		admin.setSnapToTicks(true);
 		
-		subcontent1.add(new JLabel("Freedom"), c);
-		subcontent1.add(new JLabel("Military"), c);
-		subcontent1.add(new JLabel("Taxes"), c);
-		subcontent1.add(new JLabel("Education"), c);
-		subcontent1.add(new JLabel("Infrastructure"), c);
-		subcontent1.add(new JLabel("Environment"), c);
-		subcontent1.add(new JLabel("Science & Tech"), c);
-		subcontent1.add(new JLabel("Healthcare"), c);
-		subcontent1.add(new JLabel("Administration"), c);
-		subcontent1.add(new JLabel("Legalize Marijuana"), c);
+		content1.add(new JLabel("Freedom"));
+		content1.add(new JLabel("Military"));
+		content1.add(new JLabel("Taxes"));
+		content1.add(new JLabel("Education"));
+		content1.add(new JLabel("Infrastructure"));
+		content1.add(new JLabel("Environment"));
+		content1.add(new JLabel("Science & Tech"));
+		content1.add(new JLabel("Healthcare"));
+		content1.add(new JLabel("Administration"));
+		content1.add(new JLabel("Legalize Marijuana"));
 		
-		subcontent2.add(freedom);
-		subcontent2.add(military);
-		subcontent2.add(taxes);
-		subcontent2.add(education);
-		subcontent2.add(infrastructure);
-		subcontent2.add(environment);
-		subcontent2.add(sciencetech);
-		subcontent2.add(healthcare);
-		subcontent2.add(admin);
-		subcontent2.add(mjbox);
+		content2.add(freedom);
+		content2.add(military);
+		content2.add(taxes);
+		content2.add(education);
+		content2.add(infrastructure);
+		content2.add(environment);
+		content2.add(sciencetech);
+		content2.add(healthcare);
+		content2.add(admin);
+		content2.add(mjbox);
 		
-		subcontent1.setBorder(BorderFactory.createEmptyBorder(5,75,5,0));
-		subcontent2.setBorder(BorderFactory.createEmptyBorder(5,0,5,35));
+		content1.setBorder(BorderFactory.createEmptyBorder(5,75,5,0));
+		content2.setBorder(BorderFactory.createEmptyBorder(5,0,5,35));
 		
-		setVisible(true);
-		panel.revalidate();
+		super.display();
 	}
 	
 	public class ButtonClick implements MouseListener {
-		public void mouseClicked(MouseEvent evt) {
-			if (evt.getSource()==mapimage){
-				setContentPane(panel);
-			}
-		}
+		public void mouseClicked(MouseEvent evt) {}
 		public void mouseEntered(MouseEvent evt) {
-			if (evt.getSource()==buysell){
-				mousein = 1;
-			}
-			if (evt.getSource()==newspaper){
-				mousein = 1;
-			}
-			if (evt.getSource()==map){
-				mousein = 2;
-			}
 			if (evt.getSource()==close){
-				mousein = 3;
-			}
-			if (evt.getSource()==govClose){
-				mousein = 4;
+				mousein = 1;
 			}
 		}
 		public void mouseExited(MouseEvent evt) {
@@ -143,22 +127,7 @@ public class GovView extends SubMenu{
 		}
 		public void mousePressed(MouseEvent evt) {}
 		public void mouseReleased(MouseEvent evt) {
-			if (mousein == 1 && evt.getSource()==buysell){
-				System.out.println("Opening Buy/Sell window...");
-				BuySell bs= new BuySell(sector);
-				bs.doBuySell(Empous.Com);
-			}
-			if (mousein == 1 && evt.getSource()==newspaper){
-				System.out.println("Newspaper");
-			}
-			if (mousein == 2 && evt.getSource()==map){
-				showMap();
-			}
-			if (mousein == 3 && evt.getSource()==close){
-				setVisible(false); //you can't see me!
-				dispose(); //Destroy the JFrame object
-			}
-			if (mousein == 4 && evt.getSource()==govClose){
+			if (mousein == 1 && evt.getSource()==close){
 				Empous.Gov.setGov(1, freedom.getValue());
 				Empous.Gov.setGov(2, military.getValue());
 				Empous.Gov.setGov(3, taxes.getValue());

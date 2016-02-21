@@ -139,9 +139,8 @@ public class InGame extends JPanel {
 	public void showUpdate(int newGame){
 		System.out.println("Showing new update...");
 		generateView();
-		SubMenu Sub = new SubMenu(6);
-		if(newGame==1) Sub.showUpdate(1);
-		else Sub.showUpdate(0);
+		UpdateView update = new UpdateView();
+		update.display(newGame);
 	}
 	
 	public void updateVars(){
@@ -230,13 +229,13 @@ public class InGame extends JPanel {
 //			System.out.println("Your citizens are rioting!!");
 			for(int a=1;a<=4;a++){
 				switch(a){
-				case 1: Empous.Com.build_level-=riot*2*Empous.Com.build_rate;
+				case 1: Empous.Com.setBuildLevel(Empous.Com.getBuildLevel()-riot*2*Empous.Com.getBuildRate());
 						break;
-				case 2: Empous.Res.build_level-=riot*2*Empous.Res.build_rate;;
+				case 2: Empous.Res.setBuildLevel(Empous.Res.getBuildLevel()-riot*2*Empous.Res.getBuildRate());
 						break;
-				case 3: Empous.Ind.build_level-=riot*2*Empous.Ind.build_rate;;
+				case 3: Empous.Ind.setBuildLevel(Empous.Ind.getBuildLevel()-riot*2*Empous.Ind.getBuildRate());
 						break;
-				case 4: Empous.LM.build_level-=riot*2*Empous.LM.build_rate;;
+				case 4: Empous.LM.setBuildLevel(Empous.LM.getBuildLevel()-riot*2*Empous.LM.getBuildRate());
 						break;
 				}
 			}
@@ -281,10 +280,10 @@ public class InGame extends JPanel {
 				+.6167*Empous.Gov.getGov(8)-1)*0.02;	// healthcare factor
 		f10 = (-.03*Math.pow(Empous.Gov.getGov(9),2)+0.3*Empous.Gov.getGov(9)-.25)*0.02;	// administration factor
 		f11 = (Empous.Gov.getMJ()?1:0)*0.02;	// legalize it man!
-		f12 = (Empous.Com.build_level/Empous.Com.max_build-0.8)*0.02;	// maintenance level factors
-		f13 = (Empous.Res.build_level/Empous.Res.max_build-0.8)*0.02;
-		f14 = (Empous.Ind.build_level/Empous.Ind.max_build-0.8)*0.02;
-		f15 = (Empous.LM.build_level/Empous.LM.max_build-0.8)*0.02;
+		f12 = (Empous.Com.getBuildLevel()/Empous.Com.getMaxBuild()-0.8)*0.02;	// maintenance level factors
+		f13 = (Empous.Res.getBuildLevel()/Empous.Res.getMaxBuild()-0.8)*0.02;
+		f14 = (Empous.Ind.getBuildLevel()/Empous.Ind.getMaxBuild()-0.8)*0.02;
+		f15 = (Empous.LM.getBuildLevel()/Empous.LM.getMaxBuild()-0.8)*0.02;
 		f16 = (Empous.Inf.getLevel()/Empous.Inf.getMaxLevel()-0.8)*0.02;
 		if(Empous.Gov.reserve<0) f17 = 0.05*Empous.Gov.reserve/100;
 		else f17 = 0;
@@ -384,24 +383,24 @@ public class InGame extends JPanel {
 		public void mousePressed(MouseEvent evt) {}
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==commercial){
-				SubMenu Sub = new SubMenu(1);
-				Sub.showSector(Empous.Com);
+				SectorView Sub = new SectorView(Empous.Com);
+				Sub.display();
 			}
 			if (mousein == 2 && evt.getSource()==residential){
-				SubMenu Sub = new SubMenu(2);
-				Sub.showSector(Empous.Res);
+				SectorView Sub = new SectorView(Empous.Res);
+				Sub.display();
 			}
 			if (mousein == 3 && evt.getSource()==industrial){
-				SubMenu Sub = new SubMenu(3);
-				Sub.showSector(Empous.Ind);
+				SectorView Sub = new SectorView(Empous.Ind);
+				Sub.display();
 			}
 			if (mousein == 4 && evt.getSource()==lumbermill){
-				SubMenu Sub = new SubMenu(4);
-				Sub.showSector(Empous.LM);
+				SectorView Sub = new SectorView(Empous.LM);
+				Sub.display();
 			}
 			if (mousein == 5 && evt.getSource()==government){
-				SubMenu Sub = new SubMenu(5);
-				Sub.showGov();
+				GovView Sub = new GovView();
+				Sub.display();
 			}
 			if (mousein == 6 && evt.getSource()==turn){
 				LoadSaveManager.saveGame(Empous.saveSlot);
