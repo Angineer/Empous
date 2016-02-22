@@ -59,15 +59,15 @@ public class GovView extends SubMenu{
 	}
 	
 	public void refresh(){
-		freedom = new JSlider(0,10,Empous.Gov.getGov(1));
-		military = new JSlider(0,10,Empous.Gov.getGov(2));
-		taxes = new JSlider(0,10,Empous.Gov.getGov(3));
-		education = new JSlider(0,10,Empous.Gov.getGov(4));
-		infrastructure = new JSlider(0,10,Empous.Gov.getGov(5));
-		environment = new JSlider(0,10,Empous.Gov.getGov(6));
-		sciencetech = new JSlider(0,10,Empous.Gov.getGov(7));
-		healthcare = new JSlider(0,10,Empous.Gov.getGov(8));
-		admin = new JSlider(0,10,Empous.Gov.getGov(9));
+		freedom = new JSlider(0,10,Empous.Gov.getStat("freedom"));
+		military = new JSlider(0,10,Empous.Gov.getStat("military"));
+		taxes = new JSlider(0,10,Empous.Gov.getStat("taxes"));
+		education = new JSlider(0,10,Empous.Gov.getStat("education"));
+		infrastructure = new JSlider(0,10,Empous.Gov.getStat("infrastructure"));
+		environment = new JSlider(0,10,Empous.Gov.getStat("environment"));
+		sciencetech = new JSlider(0,10,Empous.Gov.getStat("sciencetech"));
+		healthcare = new JSlider(0,10,Empous.Gov.getStat("healthcare"));
+		admin = new JSlider(0,10,Empous.Gov.getStat("admin"));
 		mjbox = new JCheckBox("",Empous.Gov.getMJ());
 		
 		freedom.setMajorTickSpacing(1);
@@ -128,15 +128,15 @@ public class GovView extends SubMenu{
 		public void mousePressed(MouseEvent evt) {}
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==close){
-				Empous.Gov.setGov(1, freedom.getValue());
-				Empous.Gov.setGov(2, military.getValue());
-				Empous.Gov.setGov(3, taxes.getValue());
-				Empous.Gov.setGov(4, education.getValue());
-				Empous.Gov.setGov(5, infrastructure.getValue());
-				Empous.Gov.setGov(6, environment.getValue());
-				Empous.Gov.setGov(7, sciencetech.getValue());
-				Empous.Gov.setGov(8, healthcare.getValue());
-				Empous.Gov.setGov(9, admin.getValue());
+				Empous.Gov.setStat("freedom", freedom.getValue());
+				Empous.Gov.setStat("military", military.getValue());
+				Empous.Gov.setStat("taxes", taxes.getValue());
+				Empous.Gov.setStat("education", education.getValue());
+				Empous.Gov.setStat("infrastructure", infrastructure.getValue());
+				Empous.Gov.setStat("environment", environment.getValue());
+				Empous.Gov.setStat("sciencetech", sciencetech.getValue());
+				Empous.Gov.setStat("healthcare", healthcare.getValue());
+				Empous.Gov.setStat("admin", admin.getValue());
 				Empous.Gov.setMJ(mjbox.isSelected());
 				setVisible(false); //you can't see me!
 				dispose(); //Destroy the JFrame object

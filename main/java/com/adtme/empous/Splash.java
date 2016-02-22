@@ -49,7 +49,7 @@ public class Splash extends JPanel implements Runnable{
 				remove(title1);
 				repaint();
             }     
-            try { Thread.sleep(200); }
+            try { Thread.sleep(50); }
             catch(InterruptedException ie) { }
 		}
 		System.out.println(SwingUtilities.isEventDispatchThread());

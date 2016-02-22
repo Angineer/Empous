@@ -144,12 +144,12 @@ public class InGame extends JPanel {
 	}
 	
 	public void updateVars(){
-		happy = Empous.Gov.publicopinion;
-		cap = Empous.Gov.reserve;
-		wood = Empous.Gov.woodstock;
-		oil = Empous.Gov.oiltank;
-		pop = Empous.Gov.census;
-		jobs = Empous.Gov.employment;
+		happy = Empous.Gov.getStat("publicopinion");
+		cap = Empous.Gov.getStat("reserve");
+		wood = Empous.Gov.getStat("woodstock");
+		oil = Empous.Gov.getStat("oiltank");
+		pop = Empous.Gov.getStat("census");
+		jobs = Empous.Gov.getStat("employment");
 	}
 	
 	public void generateView(){
@@ -222,9 +222,9 @@ public class InGame extends JPanel {
 		}
 	}
 	
-	private int riotGen(){ //Riots are generated randomly, scaled by the current happiness level and military
+	private boolean riotGen(){ //Riots are generated randomly, scaled by the current happiness level and military
 		Random riotlevel = new Random();
-		int riot = (int) Math.abs(Math.round(riotlevel.nextGaussian()*100/happy/Empous.Gov.getGov(2)));
+		int riot = (int) Math.abs(Math.round(riotlevel.nextGaussian()*100/happy/Empous.Gov.getStat("military")));
 		if(riot>=1){
 //			System.out.println("Your citizens are rioting!!");
 			for(int a=1;a<=4;a++){
@@ -239,22 +239,24 @@ public class InGame extends JPanel {
 						break;
 				}
 			}
+			return true;
 		}
-		return riot;
+		return false;
 	}
 
 
 	public int Process(){
 		double delhappy;
+		int delhappy_int;
 		double f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16, f17;
 		double[] temp1={1,0}, temp2={1,0}, temp3={1,0};
 		
-		Empous.Gov.employment = (Empous.Com.generate2()+Empous.Ind.generate2()+Empous.LM.generate2()) *
-				(1+Empous.Gov.getGov(4)/50+Empous.Gov.getGov(7)/50);	//Calculate proportional resources, Edu Sci
-		Empous.Gov.census = Empous.Res.generate2()*(1+Empous.Gov.getGov(8)/20+Empous.Gov.getGov(9)); //Health Admin
-		Empous.Gov.reserve += (Empous.Com.generate1()+Empous.Res.generate1());
-		Empous.Gov.woodstock += Empous.LM.generate1(); //Edu Env
-		Empous.Gov.oiltank += Empous.Ind.generate1(); //Sci Mil
+		Empous.Gov.setStat("employment", (Empous.Com.generate2()+Empous.Ind.generate2()+Empous.LM.generate2()) *
+				(1+Empous.Gov.getStat("education")/50+Empous.Gov.getStat("sciencetech")/50));	//Calculate proportional resources, Edu Sci
+		Empous.Gov.setStat("census", Empous.Res.generate2()*(1+Empous.Gov.getStat("healthcare")/20+Empous.Gov.getStat("admin"))); //Health Admin
+		Empous.Gov.setStat("reserve", Empous.Gov.getStat("reserve")+(Empous.Com.generate1()+Empous.Res.generate1()));
+		Empous.Gov.setStat("woodstock", Empous.Gov.getStat("woodstock")+Empous.LM.generate1()); //Edu Env
+		Empous.Gov.setStat("oiltank", Empous.Gov.getStat("oiltank")+Empous.Ind.generate1()); //Sci Mil
 		
 		//TODO Add depreciation of sectors
 		Empous.Com.upkeep();
@@ -263,29 +265,29 @@ public class InGame extends JPanel {
 		Empous.LM.upkeep();
 		Empous.Inf.upkeep();
 		
-		f1 = (Empous.Gov.census/50000000000D)*0.6; //population factor
-		if ((Empous.Gov.census*0.65-Empous.Gov.employment)/(Empous.Gov.census*0.65) < 0) f2 = 0.02; //unemployment factor
-		else if((Empous.Gov.census*0.65-Empous.Gov.employment)/(Empous.Gov.census*0.65) > -1) f2 = -0.02;
-		else f2 = (-10*((Empous.Gov.census*0.65-Empous.Gov.employment)/(Empous.Gov.census*0.65))+1)*0.02;
-		f3 = (-.0058*Math.pow(Empous.Gov.getGov(1),3)+.0692*Math.pow(Empous.Gov.getGov(1),2)
-				+.0667*Empous.Gov.getGov(1)-1)*0.02; // freedom factor
-		f4 = (-.08*Math.pow(Empous.Gov.getGov(2),2)+0.8*Empous.Gov.getGov(2)-1)*0.03125;	// military factor
-		f5 = (-.12*Empous.Gov.getGov(3)+0.2)*0.02;	// taxes factor
-		f6 = (.0021*Math.pow(Empous.Gov.getGov(4),3)-.0625*Math.pow(Empous.Gov.getGov(4),2)
-				+.6167*Empous.Gov.getGov(4)-1)*0.02; // education factor
-		f7 = (.0021*Math.pow(Empous.Gov.getGov(6),3)-.0625*Math.pow(Empous.Gov.getGov(6),2)
-				+.6167*Empous.Gov.getGov(6)-1)*0.02;	// environment factor
-		f8 = (-.03375*Math.pow(Empous.Gov.getGov(7),2)+.4575*Empous.Gov.getGov(7)-.5)*0.02; // science & technology factor
-		f9 = (.0021*Math.pow(Empous.Gov.getGov(8),3)-.0625*Math.pow(Empous.Gov.getGov(8),2)
-				+.6167*Empous.Gov.getGov(8)-1)*0.02;	// healthcare factor
-		f10 = (-.03*Math.pow(Empous.Gov.getGov(9),2)+0.3*Empous.Gov.getGov(9)-.25)*0.02;	// administration factor
+		f1 = (Empous.Gov.getStat("census")/50000000000D)*0.6; //population factor
+		if ((Empous.Gov.getStat("census")*0.65-Empous.Gov.getStat("employment"))/(Empous.Gov.getStat("census")*0.65) < 0) f2 = 0.02; //unemployment factor
+		else if((Empous.Gov.getStat("census")*0.65-Empous.Gov.getStat("employment"))/(Empous.Gov.getStat("census")*0.65) > -1) f2 = -0.02;
+		else f2 = (-10*((Empous.Gov.getStat("census")*0.65-Empous.Gov.getStat("employment"))/(Empous.Gov.getStat("census")*0.65))+1)*0.02;
+		f3 = (-.0058*Math.pow(Empous.Gov.getStat("freedom"),3)+.0692*Math.pow(Empous.Gov.getStat("freedom"),2)
+				+.0667*Empous.Gov.getStat("freedom")-1)*0.02; // freedom factor
+		f4 = (-.08*Math.pow(Empous.Gov.getStat("military"),2)+0.8*Empous.Gov.getStat("military")-1)*0.03125;	// military factor
+		f5 = (-.12*Empous.Gov.getStat("taxes")+0.2)*0.02;	// taxes factor
+		f6 = (.0021*Math.pow(Empous.Gov.getStat("education"),3)-.0625*Math.pow(Empous.Gov.getStat("education"),2)
+				+.6167*Empous.Gov.getStat("education")-1)*0.02; // education factor
+		f7 = (.0021*Math.pow(Empous.Gov.getStat("environment"),3)-.0625*Math.pow(Empous.Gov.getStat("environment"),2)
+				+.6167*Empous.Gov.getStat("environment")-1)*0.02;	// environment factor
+		f8 = (-.03375*Math.pow(Empous.Gov.getStat("sciencetech"),2)+.4575*Empous.Gov.getStat("sciencetech")-.5)*0.02; // science & technology factor
+		f9 = (.0021*Math.pow(Empous.Gov.getStat("healthcare"),3)-.0625*Math.pow(Empous.Gov.getStat("healthcare"),2)
+				+.6167*Empous.Gov.getStat("healthcare")-1)*0.02;	// healthcare factor
+		f10 = (-.03*Math.pow(Empous.Gov.getStat("admin"),2)+0.3*Empous.Gov.getStat("admin")-.25)*0.02;	// administration factor
 		f11 = (Empous.Gov.getMJ()?1:0)*0.02;	// legalize it man!
 		f12 = (Empous.Com.getBuildLevel()/Empous.Com.getMaxBuild()-0.8)*0.02;	// maintenance level factors
 		f13 = (Empous.Res.getBuildLevel()/Empous.Res.getMaxBuild()-0.8)*0.02;
 		f14 = (Empous.Ind.getBuildLevel()/Empous.Ind.getMaxBuild()-0.8)*0.02;
 		f15 = (Empous.LM.getBuildLevel()/Empous.LM.getMaxBuild()-0.8)*0.02;
 		f16 = (Empous.Inf.getLevel()/Empous.Inf.getMaxLevel()-0.8)*0.02;
-		if(Empous.Gov.reserve<0) f17 = 0.05*Empous.Gov.reserve/100;
+		if(Empous.Gov.getStat("reserve")<0) f17 = 0.05*Empous.Gov.getStat("reserve")/100;
 		else f17 = 0;
 		
 		double[][] rank = {{f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16, f17},
@@ -319,33 +321,36 @@ public class InGame extends JPanel {
 		bad2=(int) temp2[1];
 		bad3=(int) temp3[1];
 		
-//		System.out.println("factor ="+f1);
-//		System.out.println("factor ="+f2);
-//		System.out.println("factor ="+f3);
-//		System.out.println("factor ="+f4);
-//		System.out.println("factor ="+f5);
-//		System.out.println("factor ="+f6);
-//		System.out.println("factor ="+f7);
-//		System.out.println("factor ="+f8);
-//		System.out.println("factor ="+f9);
-//		System.out.println("factor ="+f10);
-//		System.out.println("factor ="+f11);
-//		System.out.println("factor ="+f12);
-//		System.out.println("factor ="+f13);
-//		System.out.println("factor ="+f14);
-//		System.out.println("factor ="+f15);
-//		System.out.println("factor ="+f16);
-//		System.out.println("factor ="+f17);
-		
 		delhappy=10*(f1+f2+f3+f4+f5+f6+f7+f8+f9+f10+f11+f12+f13+f14+f15+f16+f17);	//Change in happiness
+		delhappy_int=(int) Math.round(delhappy);
 		
-		Empous.Gov.publicopinion+=Math.round(delhappy);
-		if (Empous.Gov.publicopinion<0) Empous.Gov.publicopinion=0;
+		// Testing code
+		System.out.println("factor1 ="+f1);
+		System.out.println("factor2 ="+f2);
+		System.out.println("factor3 ="+f3);
+		System.out.println("factor4 ="+f4);
+		System.out.println("factor5 ="+f5);
+		System.out.println("factor6 ="+f6);
+		System.out.println("factor7 ="+f7);
+		System.out.println("factor8 ="+f8);
+		System.out.println("factor9 ="+f9);
+		System.out.println("factor10 ="+f10);
+		System.out.println("factor11 ="+f11);
+		System.out.println("factor12 ="+f12);
+		System.out.println("factor13 ="+f13);
+		System.out.println("factor14 ="+f14);
+		System.out.println("factor15 ="+f15);
+		System.out.println("factor16 ="+f16);
+		System.out.println("factor17 ="+f17);
+		System.out.println("delhappy = "+delhappy+","+delhappy_int);
 		
-		Empous.Gov.riotstate = riotGen();	//See if the people riot
+		Empous.Gov.setStat("publicopinion",Empous.Gov.getStat("publicopinion")+delhappy_int);
+		if (Empous.Gov.getStat("publicopinion")<0) Empous.Gov.setStat("publicopinion", 0);
+		
+		Empous.Gov.setRiot(riotGen());	//See if the people riot
 		
 		// Check for win or lose
-		if (Empous.Gov.publicopinion>=100 || Empous.Gov.publicopinion==0){
+		if (Empous.Gov.getStat("publicopinion")>=100 || Empous.Gov.getStat("publicopinion")==0){
 			return 1;
 		}
 		return 0; //If no previous conditions met, continue playing
@@ -383,19 +388,19 @@ public class InGame extends JPanel {
 		public void mousePressed(MouseEvent evt) {}
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==commercial){
-				SectorView Sub = new SectorView(Empous.Com);
+				SectorView Sub = new SectorView(InGame.this, Empous.Com);
 				Sub.display();
 			}
 			if (mousein == 2 && evt.getSource()==residential){
-				SectorView Sub = new SectorView(Empous.Res);
+				SectorView Sub = new SectorView(InGame.this, Empous.Res);
 				Sub.display();
 			}
 			if (mousein == 3 && evt.getSource()==industrial){
-				SectorView Sub = new SectorView(Empous.Ind);
+				SectorView Sub = new SectorView(InGame.this, Empous.Ind);
 				Sub.display();
 			}
 			if (mousein == 4 && evt.getSource()==lumbermill){
-				SectorView Sub = new SectorView(Empous.LM);
+				SectorView Sub = new SectorView(InGame.this, Empous.LM);
 				Sub.display();
 			}
 			if (mousein == 5 && evt.getSource()==government){

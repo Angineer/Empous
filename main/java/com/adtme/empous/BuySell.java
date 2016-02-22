@@ -4,20 +4,19 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 @SuppressWarnings("serial")
 public class BuySell extends JFrame{
 	private JPanel panel;
 	private JPanel current;
 	private JPanel content;
+	private JPanel subcontent;
 	private JPanel buttons;
-	private JPanel subcontent1;
-	private JPanel subcontent11;
-	private JPanel subcontent12;
 	private JTextField buynumber;
 	private JTextField sellnumber;
-	private JComboBox buytype;
-	private JComboBox selltype;
+	private JComboBox type;
 	private JButton buy;
 	private JButton ok;
 	private JButton close;
@@ -32,35 +31,37 @@ public class BuySell extends JFrame{
 	private JLabel jl4;
 	private JLabel jl5;
 	private JLabel jl6;
-	private JLabel jl7;
-	private JLabel jl8;
-	private JLabel jl9;
 	
+	private SectorView parent;
 	private Capital sector;
 	
 	private GridBagConstraints c;
 	
 	private int mousein = 0;
 	
-	public BuySell(Capital sector){
+	public BuySell(SectorView parent, Capital sector){
 		super(); //Create the frame
-		setTitle("Buy/Sell");
-		
 		this.sector=sector;
+		this.parent=parent;
 		
+		// Create listeners
 		ButtonClick buttonWatch = new ButtonClick();
-		Change otherWatch = new Change();
+		Change1 typeWatch = new Change1();
+		Change2 numWatch = new Change2();
+		FocusChange focusWatch = new FocusChange();
 		
+		// Basic frame settings
+		setTitle("Buy/Sell");
 		setBackground(Color.WHITE);
-		setSize(450,250); //Default window size
+		setSize(575,200); //Default window size
 		setResizable(false);
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 	    setLocation( (screensize.width - getWidth())/2, (screensize.height - getHeight())/2); // Put it in the middle
 	    
+	    // Components
 	    current = new JPanel();
 	    current.setOpaque(false);
 	    current.setLayout(new GridLayout(1,4));
-	    
 	    current.add(new JLabel("Resources: "));
 	    current.setBorder(BorderFactory.createEmptyBorder(15,10,0,10));
 	    
@@ -72,13 +73,11 @@ public class BuySell extends JFrame{
 		current.add(cl2);
 		current.add(cl3);
 	    
-	    subcontent1 = new JPanel();
-	    subcontent1.setBorder(BorderFactory.createEmptyBorder(15,25,15,25));
-	    subcontent1.setLayout(new GridBagLayout());
-	    subcontent11 = new JPanel();
-	    subcontent11.setOpaque(false);
-	    subcontent12 = new JPanel();
-	    subcontent12.setOpaque(false);
+	    content = new JPanel();
+	    content.setBorder(BorderFactory.createEmptyBorder(15,25,15,25));
+	    content.setLayout(new GridBagLayout());
+	    subcontent = new JPanel();
+	    subcontent.setOpaque(false);
 	    
 	    c = new GridBagConstraints();
 	    c.ipadx = 15;
@@ -87,49 +86,39 @@ public class BuySell extends JFrame{
 	    c.weighty = 0.25;
 	    c.gridx = 0;
 	    c.gridy = 0;
-	    subcontent1.add(new JLabel("  "));
+	    content.add(new JLabel("  "));
 	    c.gridy = 1;
-	    subcontent1.add(subcontent11, c);
+	    content.add(subcontent, c);
 	    c.gridy = 2;
-	    subcontent1.add(subcontent12, c);
-	    c.gridy = 3;
-	    subcontent1.add(new JLabel("Total to spend:"), c);
+	    content.add(new JLabel("Total to spend:"), c);
 	    
-	    buynumber = new JTextField("0",2);
-	    buynumber.addActionListener(otherWatch);
-	    sellnumber = new JTextField("0",2);
-	    sellnumber.addActionListener(otherWatch);
+	    buynumber = new JTextField("0",3);
+	    buynumber.getDocument().addDocumentListener(numWatch);
+	    buynumber.addFocusListener(focusWatch);
+	    sellnumber = new JTextField("0",3);
+	    sellnumber.getDocument().addDocumentListener(numWatch);
+	    sellnumber.addFocusListener(focusWatch);
 	    
-	    String[] list = {"Small Commercial", "Med Commercial", "Large Commercial",
-	    				"Small Residential", "Med Residential", "Large Residential",
-	    				"Small Industrial", "Med Industrial", "Large Industrial",
-	    				"Small Lumber Mill", "Med Lumber Mill", "Large Lumber Mill"};
+	    String[] list = {"Small "+sector.getType(), "Medium "+sector.getType(), "Large "+sector.getType(),};
 	    
-	    buytype = new JComboBox(list);
-	    buytype.setBackground(Color.WHITE);
-	    buytype.setSelectedIndex(2*3-3);
-	    buytype.addActionListener(otherWatch);
-	    selltype = new JComboBox(list);
-	    selltype.setBackground(Color.WHITE);
-	    selltype.setSelectedIndex(2*3-3);
-	    selltype.addActionListener(otherWatch);
+	    type = new JComboBox(list);
+	    type.setBackground(Color.WHITE);
+	    type.addActionListener(typeWatch);
 	    
-	    subcontent11.add(new JLabel("Buy "));
-	    subcontent11.add(buynumber);
-	    subcontent11.add(buytype);
-	    
-	    subcontent12.add(new JLabel("Sell "));
-	    subcontent12.add(sellnumber);
-	    subcontent12.add(selltype);
+	    subcontent.add(new JLabel("Buy "));
+	    subcontent.add(buynumber);
+	    subcontent.add(new JLabel("Sell "));
+	    subcontent.add(sellnumber);
+	    subcontent.add(type);
 	    
 	    c.weightx = 1/6;
 	    c.gridy = 0;
 		c.gridx = 1;
-		subcontent1.add(new JLabel("Capital"), c);
+		content.add(new JLabel("Capital"), c);
 		c.gridx =2;
-		subcontent1.add(new JLabel("Wood"), c);
+		content.add(new JLabel("Wood"), c);
 		c.gridx =3;
-		subcontent1.add(new JLabel("Oil"), c);
+		content.add(new JLabel("Oil"), c);
 		
 		jl1 = new JLabel("");
 		jl2 = new JLabel("");
@@ -137,38 +126,24 @@ public class BuySell extends JFrame{
 		jl4 = new JLabel("");
 		jl5 = new JLabel("");
 		jl6 = new JLabel("");
-		jl7 = new JLabel("");
-		jl8 = new JLabel("");
-		jl9 = new JLabel("");
 		
 		c.gridy = 1;
 		c.gridx = 1;
-		subcontent1.add(jl1, c);
+		content.add(jl1, c);
 		c.gridx = 2;
-		subcontent1.add(jl2, c);
+		content.add(jl2, c);
 		c.gridx = 3;
-		subcontent1.add(jl3, c);
-		
+		content.add(jl3, c);
+	    
 		c.gridy = 2;
 		c.gridx = 1;
-		subcontent1.add(jl4, c);
+		content.add(jl4, c);
 		c.gridx = 2;
-		subcontent1.add(jl5, c);
+		content.add(jl5, c);
 		c.gridx = 3;
-		subcontent1.add(jl6, c);
+		content.add(jl6, c);
 	    
-		c.gridy = 3;
-		c.gridx = 1;
-		subcontent1.add(jl7, c);
-		c.gridx = 2;
-		subcontent1.add(jl8, c);
-		c.gridx = 3;
-		subcontent1.add(jl9, c);
-	    
-	    content = new JPanel();
-	    content.setOpaque(false);
-	    content.add(subcontent1);
-	    
+	    // Buttons
 	    buttons = new JPanel();
 	    buttons.setOpaque(false);
 	    
@@ -182,7 +157,8 @@ public class BuySell extends JFrame{
 	    buttons.add(buy);
 	    buttons.add(ok);
 	    buttons.add(close);
-	    	    
+	    
+	    // Component holder
 	    panel = new JPanel();
 	    panel.setOpaque(false);
 	    panel.setLayout(new BorderLayout());
@@ -196,6 +172,7 @@ public class BuySell extends JFrame{
 	}
 	
 	public void display(){
+		calcStats();
 	    refresh();
 		setVisible(true);
 	}
@@ -208,117 +185,113 @@ public class BuySell extends JFrame{
 		jl1.setText(Integer.toString(stats[1][0]));
 		jl2.setText(Integer.toString(stats[1][1]));
 		jl3.setText(Integer.toString(stats[1][2]));
-		jl4.setText(Integer.toString(stats[2][0]));
-		jl5.setText(Integer.toString(stats[2][1]));
-		jl6.setText(Integer.toString(stats[2][2]));
-		jl7.setText(Integer.toString(sum[0][0]));
-		jl8.setText(Integer.toString(sum[0][1]));
-		jl9.setText(Integer.toString(sum[0][2]));
+		jl4.setText(Integer.toString(sum[0][0]));
+		jl5.setText(Integer.toString(sum[0][1]));
+		jl6.setText(Integer.toString(sum[0][2]));
 		
-	    setVisible(true);
 		panel.revalidate();
+		parent.refresh();
 	}
 	
-	public void BuySellCalc(int buy, int size){
-		int avail = 0;
+	public void calcStats(){
+		int buyquant = Integer.parseInt(buynumber.getText());
+		int sellquant = Integer.parseInt(sellnumber.getText());
+		int type_int = type.getSelectedIndex()+1;
+		int avail = sector.getQuantity(type_int);
 
-		avail=sector.getQuantity(size);
-		stats[buy][0]=sector.getCost("capital", size);
-		stats[buy][1]=sector.getCost("wood", size);
-		stats[buy][2]=sector.getCost("oil", size);
-		
-//		System.out.println("Size = "+size);
-//		System.out.println("Available = "+avail);
-		avail-=(Integer.parseInt(sellnumber.getText())-Integer.parseInt(buynumber.getText()));
-//		System.out.println("Available = "+avail);
-		if (avail<0){
-			avail+=Integer.parseInt(sellnumber.getText());
-			sellnumber.setText(Integer.toString(avail));
+		if (avail+buyquant-sellquant<0){
+			sellquant=avail+buyquant;
+			final int temp = sellquant; // Weird java passthrough thing
+			SwingUtilities.invokeLater(new Runnable(){
+				public void run(){
+					sellnumber.setText(Integer.toString(temp));
+				}
+			});
 		}
-		stats[0][0]=(int) Empous.Gov.reserve;
-		stats[0][1]=(int) Empous.Gov.woodstock;
-		stats[0][2]=(int) Empous.Gov.oiltank;
-		stats[1][0]=sector.getCost("capital", size);
-		stats[1][1]=sector.getCost("wood", size);
-		stats[1][2]=sector.getCost("oil", size);
-		stats[2][0]=sector.getCost("capital", size);
-		stats[2][1]=sector.getCost("wood", size);
-		stats[2][2]=sector.getCost("oil", size);
+		stats[0][0] = Empous.Gov.getStat("reserve");
+		stats[0][1] = Empous.Gov.getStat("woodstock");
+		stats[0][2] = Empous.Gov.getStat("oiltank");
+		stats[1][0] = sector.getCost("capital", type_int);
+		stats[1][1] = sector.getCost("wood", type_int);
+		stats[1][2] = sector.getCost("oil", type_int);
 		
-		sum[0][0]=(stats[1][0]*Integer.parseInt(buynumber.getText())-stats[2][0]*Integer.parseInt(sellnumber.getText()));
-		sum[0][1]=(stats[1][1]*Integer.parseInt(buynumber.getText())-stats[2][1]*Integer.parseInt(sellnumber.getText()));
-		sum[0][2]=(stats[1][2]*Integer.parseInt(buynumber.getText())-stats[2][2]*Integer.parseInt(sellnumber.getText()));
+		sum[0][0]=(stats[1][0]*(buyquant-sellquant));
+		sum[0][1]=(stats[1][1]*(buyquant-sellquant));
+		sum[0][2]=(stats[1][2]*(buyquant-sellquant));
 	}
 	
 	public void settle(){
-		int btype;
-		int stype;
+		int buyquant = Integer.parseInt(buynumber.getText());
+		int sellquant = Integer.parseInt(sellnumber.getText());
+		int type_int = type.getSelectedIndex()+1;
+		int current = sector.getQuantity(type_int);
 		
-		if (Empous.Gov.reserve > sum[0][0] &&
-				Empous.Gov.woodstock > sum[0][1] &&
-				Empous.Gov.oiltank > sum[0][2]){
-			Empous.Gov.reserve-=sum[0][0];
-			Empous.Gov.woodstock-=sum[0][1];
-			Empous.Gov.oiltank-=sum[0][2];
+		int checkCap = Empous.Gov.getStat("reserve") - sum[0][0];
+		int checkWood = Empous.Gov.getStat("woodstock") - sum[0][1];
+		int checkOil = Empous.Gov.getStat("oiltank") - sum[0][2];
+		
+		// If they have enough resources, perform the transaction
+		if (checkCap >= 0 && checkWood >= 0 && checkOil >= 0){
 			
-			btype=buytype.getSelectedIndex();
-			stype=selltype.getSelectedIndex();
-			
-			switch(btype){
-				case(0): Empous.Com.setQuantity(Empous.Com.getQuantity(1)+Integer.parseInt(buynumber.getText()), 1); break;
-				case(1): Empous.Com.setQuantity(Empous.Com.getQuantity(2)+Integer.parseInt(buynumber.getText()), 2); break;
-				case(2): Empous.Com.setQuantity(Empous.Com.getQuantity(3)+Integer.parseInt(buynumber.getText()), 3); break;
-				case(3): Empous.Res.setQuantity(Empous.Res.getQuantity(1)+Integer.parseInt(buynumber.getText()), 1); break;
-				case(4): Empous.Res.setQuantity(Empous.Res.getQuantity(2)+Integer.parseInt(buynumber.getText()), 2); break;
-				case(5): Empous.Res.setQuantity(Empous.Res.getQuantity(3)+Integer.parseInt(buynumber.getText()), 3); break;
-				case(6): Empous.Ind.setQuantity(Empous.Ind.getQuantity(1)+Integer.parseInt(buynumber.getText()), 1); break;
-				case(7): Empous.Ind.setQuantity(Empous.Ind.getQuantity(2)+Integer.parseInt(buynumber.getText()), 2); break;
-				case(8): Empous.Ind.setQuantity(Empous.Ind.getQuantity(3)+Integer.parseInt(buynumber.getText()), 3); break;
-				case(9): Empous.LM.setQuantity(Empous.LM.getQuantity(1)+Integer.parseInt(buynumber.getText()), 1); break;
-				case(10): Empous.LM.setQuantity(Empous.LM.getQuantity(2)+Integer.parseInt(buynumber.getText()), 2); break;
-				case(11): Empous.LM.setQuantity(Empous.LM.getQuantity(3)+Integer.parseInt(buynumber.getText()), 3); break;
-			}
-			
-			switch(stype){
-				case(0): Empous.Com.setQuantity(Empous.Com.getQuantity(1)-Integer.parseInt(sellnumber.getText()), 1); break;
-				case(1): Empous.Com.setQuantity(Empous.Com.getQuantity(2)-Integer.parseInt(sellnumber.getText()), 2); break;
-				case(2): Empous.Com.setQuantity(Empous.Com.getQuantity(3)-Integer.parseInt(sellnumber.getText()), 3); break;
-				case(3): Empous.Res.setQuantity(Empous.Res.getQuantity(1)-Integer.parseInt(sellnumber.getText()), 1); break;
-				case(4): Empous.Res.setQuantity(Empous.Res.getQuantity(2)-Integer.parseInt(sellnumber.getText()), 2); break;
-				case(5): Empous.Res.setQuantity(Empous.Res.getQuantity(3)-Integer.parseInt(sellnumber.getText()), 3); break;
-				case(6): Empous.Ind.setQuantity(Empous.Ind.getQuantity(1)-Integer.parseInt(sellnumber.getText()), 1); break;
-				case(7): Empous.Ind.setQuantity(Empous.Ind.getQuantity(2)-Integer.parseInt(sellnumber.getText()), 2); break;
-				case(8): Empous.Ind.setQuantity(Empous.Ind.getQuantity(3)-Integer.parseInt(sellnumber.getText()), 3); break;
-				case(9): Empous.LM.setQuantity(Empous.LM.getQuantity(1)-Integer.parseInt(sellnumber.getText()), 1); break;
-				case(10): Empous.LM.setQuantity(Empous.LM.getQuantity(2)-Integer.parseInt(sellnumber.getText()), 2); break;
-				case(11): Empous.LM.setQuantity(Empous.LM.getQuantity(3)-Integer.parseInt(sellnumber.getText()), 3); break;
-			}
-			
+			Empous.Gov.setStat("reserve", checkCap);
+			Empous.Gov.setStat("woodstock", checkWood);
+			Empous.Gov.setStat("oiltank", checkOil);
+						
+			sector.setQuantity(type_int, current+buyquant-sellquant);
 		}
+		// If they don't, give a warning
 		else{
-			System.out.println("Not enough resource");
+			System.out.println("Not enough resources!");
 		}
-		
-		stats[0][0]=(int) Empous.Gov.reserve;
-		stats[0][1]=(int) Empous.Gov.woodstock;
-		stats[0][2]=(int) Empous.Gov.oiltank;
-		
-		cl1.setText("Capital = "+stats[0][0]);
-		cl2.setText("Wood = "+stats[0][1]);
-		cl3.setText("Oil = "+stats[0][2]);
 	}
 	
-	public class Change implements ActionListener{
+	public class Change1 implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent evt) {
-			if (evt.getSource()==buytype || evt.getSource()==buynumber){
+			if (evt.getSource()==type){
+				calcStats();
 				refresh();
 			}
-			if (evt.getSource()==selltype || evt.getSource()==sellnumber){
-				refresh();
+		}
+	}
+	
+	public class Change2 implements DocumentListener{
+		public void changedUpdate(DocumentEvent evt) {
+			update();
 			}
-			if (evt.getSource()==buynumber || evt.getSource()==sellnumber){
-				refresh();
+		public void insertUpdate(DocumentEvent evt) {
+			update();
+		}
+		public void removeUpdate(DocumentEvent evt) {
+			update();
+		}
+		
+		public void update(){
+			try{
+				Integer.parseInt(buynumber.getText());}
+			catch(NumberFormatException nf){
+				return;
+			}
+			try{
+				Integer.parseInt(sellnumber.getText());}
+			catch(NumberFormatException nf){
+				return;
+			}
+			calcStats();
+			refresh();
+		}
+	}
+	
+	public class FocusChange implements FocusListener{
+		@Override
+		public void focusGained(FocusEvent evt) {}
+		@Override
+		public void focusLost(FocusEvent evt) {
+			if (evt.getSource()==buynumber){
+				if (buynumber.getText().equals("")) buynumber.setText("0");			
+			}
+			if (evt.getSource()==sellnumber){
+				if (sellnumber.getText().equals("")) sellnumber.setText("0");			
 			}
 		}
 	}
@@ -343,6 +316,7 @@ public class BuySell extends JFrame{
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==buy){
 				settle();
+				calcStats();
 				refresh();
 			}
 			if (mousein == 2 && evt.getSource()==ok){

@@ -51,12 +51,16 @@ public class SectorView extends SubMenu{
 	private int mousein = 0;
 	private Capital sector;
 	private String sectorstr;
+	private InGame parent;
 	
 	private int[][] stats = new int[5][3];
 	private int[][] sum = new int[1][4];
 
-	public SectorView(Capital targetSector) {
+	public SectorView(InGame parent, Capital targetSector) {
 		super();
+		this.parent=parent;
+		
+		// Create listeners
 		buttonWatch = new ButtonClick();
 		
 		sector=targetSector;
@@ -97,24 +101,6 @@ public class SectorView extends SubMenu{
 		content1 = new JPanel();
 		content2 = new JPanel();
 		
-		overpanel.add(content2);
-		
-		addContent(content1);
-		addContent(overpanel);
-		
-		// Buttons
-		buysell = new JButton("Buy/Sell");
-		buysell.addMouseListener(buttonWatch);
-		close = new JButton("Close");
-		close.addMouseListener(buttonWatch);
-		
-		addButton(buysell);
-		addButton(close);
-		
-		refresh();
-	}
-	
-	public void refresh(){
 		content1.setLayout(new GridBagLayout());
 		content2.setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
@@ -190,6 +176,24 @@ public class SectorView extends SubMenu{
 		c.gridx = 4;
 		content2.add(jl16, c);
 		
+		overpanel.add(content2);
+		
+		addContent(content1);
+		addContent(overpanel);
+		
+		// Buttons
+		buysell = new JButton("Buy/Sell");
+		buysell.addMouseListener(buttonWatch);
+		close = new JButton("Close");
+		close.addMouseListener(buttonWatch);
+		
+		addButton(buysell);
+		addButton(close);
+		
+		refresh();
+	}
+	
+	public void refresh(){
 		calcStats();
 		
 		jla.setText("       "+stats[0][0]+" Small "+sectorstr+" Units");
@@ -212,6 +216,8 @@ public class SectorView extends SubMenu{
 		jl14.setText(Integer.toString(sum[0][1]));
 		jl15.setText(Integer.toString(sum[0][2]));
 		jl16.setText(Integer.toString(sum[0][3]));
+		
+		parent.generateView();
 	}
 	
 	public void calcStats(){
@@ -255,7 +261,7 @@ public class SectorView extends SubMenu{
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==buysell){
 				System.out.println("Opening Buy/Sell window...");
-				BuySell bs= new BuySell(Empous.Com);
+				BuySell bs= new BuySell(SectorView.this, sector);
 				bs.display();
 			}
 			if (mousein == 2 && evt.getSource()==close){

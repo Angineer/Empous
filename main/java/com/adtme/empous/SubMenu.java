@@ -17,8 +17,9 @@ public class SubMenu extends JFrame{
 	public SubMenu(){
 		super(); //Create the frame
 		
+		// Basic frame settings
 		setBackground(Color.WHITE);
-		setSize(450,350); //Default window size
+		setSize(500,350);
 		setResizable(false);
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 	    setLocation( (screensize.width - getWidth())/2, (screensize.height - getHeight())/2); // Put it in the middle
@@ -48,7 +49,6 @@ public class SubMenu extends JFrame{
 	}
 	
 	public void display(){
-		System.out.println("Sub-menu generated!");
 		setVisible(true);
 		panel.revalidate();
 	}

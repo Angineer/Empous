@@ -115,12 +115,12 @@ public class Empous {
 	}
 	
 	public static void winLose(){
-		if (Empous.Gov.publicopinion>=100){
+		if (Empous.Gov.getStat("publicopinion")>=100){
 			UpdateView finalUpdate = new UpdateView(0);
 			finalUpdate.display();
 			System.out.println("YOU ARE WINNER!");
 		}
-		else if (Empous.Gov.publicopinion==0){
+		else if (Empous.Gov.getStat("publicopinion")==0){
 			UpdateView finalUpdate = new UpdateView(0);
 			finalUpdate.display();
 			System.out.println("YOU LOSE!");

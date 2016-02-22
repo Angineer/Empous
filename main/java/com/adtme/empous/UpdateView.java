@@ -66,35 +66,36 @@ public class UpdateView extends SubMenu{
 			
 			jenn.setText(line1+"\n\n"+line2+"\n\n"+line3);
 			
-			if(Empous.Gov.publicopinion==0){
+			if(Empous.Gov.getStat("publicopinion")==0){
 				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is DESTROYED");
 				jenn.setText("Despite your best efforts, your dream of an empire that ruled the world has " +
 				"come to a bitter, fruitless end. \n\n It has been an honor serving you, mayor.");
 			}
-			else if(Empous.Gov.publicopinion<=10){
+			else if(Empous.Gov.getStat("publicopinion")<=10){
 				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is ABYSMAL");
 			}
-			else if(Empous.Gov.publicopinion<=25){
+			else if(Empous.Gov.getStat("publicopinion")<=25){
 				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is TERRIBLE");
 			}
-			else if(Empous.Gov.publicopinion<=50){
+			else if(Empous.Gov.getStat("publicopinion")<=50){
 				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is BAD");
 			}
-			else if(Empous.Gov.publicopinion<=75){
+			else if(Empous.Gov.getStat("publicopinion")<=75){
 				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is GOOD");
 			}
-			else if(Empous.Gov.publicopinion<=90){
+			else if(Empous.Gov.getStat("publicopinion")<=90){
 				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is GREAT");
 			}
-			else if(Empous.Gov.publicopinion<=100){
+			else if(Empous.Gov.getStat("publicopinion")<=100){
 				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is UTOPIAN");
 			}
-			else if(Empous.Gov.publicopinion>100){
+			else if(Empous.Gov.getStat("publicopinion")>100){
 				setDescription("src/main/resources/images/JennIcon.png", "Your empire's status is COMPLETE");
 				jenn.setText("You did it! Your hard work and perseverence have paid off and your empire " +
 				"now governs all of human existence. Who knew this would be so rewarding?");
 			}
-			// TODO fix hierarchy of text
+			// TODO fix hierarchy of text and use local variable to store public opinion, 
+			// rather than calling method in each if statement
 			/*if (Empous.Gov.riotstate!=0){
 				jenn.setText("YOUR CITIZENS ARE RIOTING! IMPROVE THE SITUATION QUICK!\n\n" +
 						"If you don't make some good changes, there is no saying what will become " +

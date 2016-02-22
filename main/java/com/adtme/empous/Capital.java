@@ -52,30 +52,30 @@ public class Capital implements Serializable{
 	}
 	
 	public void upkeep(){
-		build_level+=(Empous.Gov.getGov(5)-7)*build_rate;
-			
+		build_level+=(Empous.Gov.getStat("infrastructure")-7)*build_rate;
+
 		if (build_level>max_build)
 			build_level=max_build;
 	}
 
 	public int generate1(){ //Generate per-turn resources
 		if (resource1==1){
-			resource1_level=(sgenrate1*small+mgenrate1*med+lgenrate1*large)*Empous.Gov.getGov(3)/5
-					-((Empous.Gov.getGov(1)*Empous.Gov.getGov(2)+1)*10
-					+Empous.Gov.getGov(4)*10
-					+Empous.Gov.getGov(5)*10
-					+Empous.Gov.getGov(6)*5
-					+Empous.Gov.getGov(7)*5
-					+Empous.Gov.getGov(8)*15
-					+Empous.Gov.getGov(9)*1);
+			resource1_level=(sgenrate1*small+mgenrate1*med+lgenrate1*large)*Empous.Gov.getStat("taxes")/5
+					-((Empous.Gov.getStat("freedom")*Empous.Gov.getStat("military")+1)*10
+					+Empous.Gov.getStat("education")*10
+					+Empous.Gov.getStat("infrastructure")*10
+					+Empous.Gov.getStat("environment")*5
+					+Empous.Gov.getStat("sciencetech")*5
+					+Empous.Gov.getStat("healthcare")*15
+					+Empous.Gov.getStat("admin")*1);
 		}
 		else if (resource1==2){
 			resource1_level=(sgenrate1*small+mgenrate1*med+lgenrate1*large)*
-				(1+Empous.Gov.getGov(7)/100+Empous.Gov.getGov(2)/100);
+				(1+Empous.Gov.getStat("sciencetech")/100+Empous.Gov.getStat("military")/100);
 		}
 		else if (resource1==3){
 			resource1_level=(sgenrate1*small+mgenrate1*med+lgenrate1*large)*
-			(1+Empous.Gov.getGov(4)/100+Empous.Gov.getGov(6)/75);
+			(1+Empous.Gov.getStat("education")/100+Empous.Gov.getStat("environment")/75);
 		}
 		return resource1_level;
 	}

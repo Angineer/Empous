@@ -13,7 +13,7 @@ public class Infrastructure implements Serializable{
 		return max_level;
 	}
 	public void upkeep(){
-		level+=(Empous.Gov.getGov(5)-7)*repair_rate;
+		level+=(Empous.Gov.getStat("infrastructure")-7)*repair_rate;
 		
 		if (level>max_level)
 			level=max_level;
