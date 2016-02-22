@@ -1,14 +1,12 @@
 package main.java.com.adtme.empous;
 
 import java.awt.*;
-import java.awt.image.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
-public class Splash extends JPanel implements Runnable{
-	
-	private BufferedImage title;
-	
+public class Splash extends JPanel implements ActionListener{
 	private Color background = Color.white;
 	private Font font1 = new Font("Serif", Font.PLAIN, 24);
 	private Font font3 = new Font("Serif", Font.ITALIC, 18);
@@ -17,8 +15,9 @@ public class Splash extends JPanel implements Runnable{
 	private JLabel title1;
 	private JLabel title2;
 	
+	private Timer timer;
+	
 	public Splash(){ //Constructor
-		title=Empous.LoadImage("src/main/resources/images/title.png");
 		setBackground(background);
 		
 		title1 = new JLabel("Hades Games Presents", JLabel.CENTER); //Create the title objects
@@ -33,32 +32,35 @@ public class Splash extends JPanel implements Runnable{
 		title1.setBorder(BorderFactory.createEmptyBorder(0, 0, 275, 0));
 		add(title2, BorderLayout.NORTH);
 		add(title1, BorderLayout.SOUTH);
-	}
-	
-	@Override
-	public void run() {
-		while(counter != 3){
-			counter++;
-			//System.out.println( "Frame "+counter);
-			if(counter == 2){
-            	title2.setText("In Association With");
-				title1.setText("El Pollo Diablo Productions");
-            }
-            if(counter == 3){
-            	remove(title2);
-				remove(title1);
-				repaint();
-            }     
-            try { Thread.sleep(50); }
-            catch(InterruptedException ie) { }
-		}
-		System.out.println(SwingUtilities.isEventDispatchThread());
-		System.out.println("Animation done...");
+		
+		counter=0;
+		timer = new Timer(2000, this);
+		timer.setInitialDelay(0);
+		repaint();
+		timer.start();
 	}
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		if(counter == 3)
-		g.drawImage(title, 0, 0, 640, 480, null);
+		//System.out.println(SwingUtilities.isEventDispatchThread());
+		if(counter==1){
+		}
+		else if(counter == 2){
+        	title2.setText("In Association With");
+			title1.setText("El Pollo Diablo Productions");
+        }
+		else if(counter == 3){
+			timer.stop();
+			System.out.println("Animation done...");
+			System.out.println("Main menu...");
+			Empous.window.setTitle("Empous");
+			Empous.window.display(Empous.menu);
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		counter++;
+		repaint();
 	}
 }

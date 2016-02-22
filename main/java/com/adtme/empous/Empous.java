@@ -2,11 +2,9 @@ package main.java.com.adtme.empous;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 /**
  * Empous
@@ -47,25 +45,9 @@ public class Empous {
 		System.out.println("Generating GUI...");
 		window = new GUI();
 		
-		// Splash screen
+		// Splash screen (starts main menu when done)
 		System.out.println("Splash screen...");
 		window.display(Empous.splash);
-		// Run splash animation on EDT
-		// TODO Fix this thing so it's thread safe and still runs
-		try {
-			SwingUtilities.invokeAndWait(Empous.splash);
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// Display main menu
-		System.out.println("Main menu...");
-		window.setTitle("Empous");
-		window.display(Empous.menu);			
 	}
 	
 	public static void newGame(){
