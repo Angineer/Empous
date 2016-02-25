@@ -1,6 +1,7 @@
 package main.java.com.adtme.empous;
 
 import java.awt.*;
+import java.net.URL;
 
 import javax.swing.*;
 
@@ -54,7 +55,9 @@ public class SubMenu extends JFrame{
 	}
 	
 	public void setDescription(String iconPath, String text){
-		icon = new ImageIcon(iconPath);
+		URL resource;
+		resource=SubMenu.class.getResource(iconPath);
+		icon = new ImageIcon(resource);
 		description.setIcon(icon);
 		description.setText(text);
 		description.setForeground(DescColor);

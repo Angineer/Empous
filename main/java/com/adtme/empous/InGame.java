@@ -42,7 +42,7 @@ public class InGame extends JPanel {
 	private int mousein = 0;
 	
 	public InGame(){
-		chairimg = Empous.LoadImage("src/main/resources/images/chair.png");
+		chairimg = Empous.LoadImage("/main/resources/images/chair.png");
 		setLayout(new BorderLayout());
 		ButtonClick buttonWatch = new ButtonClick ();
 		

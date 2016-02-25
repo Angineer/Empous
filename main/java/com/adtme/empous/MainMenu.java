@@ -20,7 +20,7 @@ public class MainMenu extends JPanel {
 	private Font menufont = new Font("SansSerif", Font.PLAIN, 24);
 	
 	public MainMenu(){
-		title=Empous.LoadImage("src/main/resources/images/title.png");
+		title=Empous.LoadImage("/main/resources/images/title.png");
 		
 		setLayout(new BorderLayout()); //Main layout
 		setOpaque(false); //Let the title screen show through

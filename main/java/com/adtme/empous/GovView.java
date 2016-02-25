@@ -39,7 +39,7 @@ public class GovView extends SubMenu{
 		
 		setTitle("Sector View - Government");
 		
-		setDescription("src/main/resources/images/GovIcon.png", "<html>The Government makes the laws and set the policies that tell " +
+		setDescription("/main/resources/images/GovIcon.png", "<html>The Government makes the laws and set the policies that tell " +
 				"your citizens what they can and can't do.</html>");
 		
 		setContentLayout(new GridLayout(1,2));

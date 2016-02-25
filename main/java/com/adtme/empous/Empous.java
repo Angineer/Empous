@@ -2,6 +2,7 @@ package main.java.com.adtme.empous;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -84,9 +85,11 @@ public class Empous {
 	}
 	
 	public static BufferedImage LoadImage(String filepath){
+		URL resource;
 		BufferedImage image=null;
-		try{                
-	    	image = ImageIO.read(new File(filepath));
+		try{
+			resource = Empous.class.getResource(filepath);
+	    	image = ImageIO.read(resource);
 	    }
 		catch (IOException ex) {
 			System.out.println("Couldn't find image!");

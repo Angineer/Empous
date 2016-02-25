@@ -69,19 +69,19 @@ public class SectorView extends SubMenu{
 		
 		// Description
 		if (sectorstr.equals("Commercial")){
-			setDescription("src/main/resources/images/ComIcon.png", "<html>The Commercial sector provides jobs for your hardworking citizens, " +
+			setDescription("/main/resources/images/ComIcon.png", "<html>The Commercial sector provides jobs for your hardworking citizens, " +
 					"and frivolous spending for your rich ones.</html>");
 		}
 		else if (sectorstr.equals("Residential")){
-			setDescription("src/main/resources/images/ResIcon.png", "<html>The Residential sector provides a place for your citizens to rest " +
+			setDescription("/main/resources/images/ResIcon.png", "<html>The Residential sector provides a place for your citizens to rest " +
 					"their weary heads.</html>");
 		}
 		else if (sectorstr.equals("Industrial")){
-			setDescription("src/main/resources/images/IndIcon.png", "<html>The Industrial sector provides necessary jobs and produces the widgets " +
+			setDescription("/main/resources/images/IndIcon.png", "<html>The Industrial sector provides necessary jobs and produces the widgets " +
 					"that power the modern economy.</html>");
 		}
 		else if (sectorstr.equals("Lumber")){
-			setDescription("src/main/resources/images/LumberIcon.png", "<html>What great empire could exist without lumber mills???</html>");
+			setDescription("/main/resources/images/LumberIcon.png", "<html>What great empire could exist without lumber mills???</html>");
 		}
 		
 		// Overlaid content

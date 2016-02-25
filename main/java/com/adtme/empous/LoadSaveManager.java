@@ -13,9 +13,17 @@ public class LoadSaveManager {
 			slot++;
 		}
 		
+		// Find appropriate save directory for OS
+		String directory_str = System.getProperty("user.home") + "/.Empous/saves";
+		File directory = new File(directory_str);
+		if (!directory.exists()){
+			directory.mkdirs();
+			System.out.println("Save file location created!");
+		}
+		
 		// Save game
 		System.out.println("Saving save slot " + slot + "...");
-		File saveFile = new File("src/main/saves/savedata"+slot+".dat");
+		File saveFile = new File(directory_str + "/savedata"+slot+".dat");
 		try{
 			FileOutputStream fstream = new FileOutputStream (saveFile);
 			ObjectOutputStream out = new ObjectOutputStream(fstream);
@@ -43,9 +51,12 @@ public class LoadSaveManager {
 		int slot = JOptionPane.showOptionDialog(null, "Select your save slot", "Save Slot", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		slot++;
 		
+		// Find appropriate save directory for OS
+		String directory_str = System.getProperty("user.home") + "/.Empous/saves";
+		
 		// Load saved game
 		System.out.println("Loading save slot " + slot + "...");
-		File loadFile = new File("src/main/saves/savedata"+slot+".dat");
+		File loadFile = new File(directory_str + "/savedata"+slot+".dat");
 		try{
 			FileInputStream fstream = new FileInputStream (loadFile);
 			ObjectInputStream in = new ObjectInputStream(fstream);
