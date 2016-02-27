@@ -9,6 +9,7 @@ public class UpdateView extends SubMenu{
 	private static final long serialVersionUID = 1L;
 	
 	private Map mapimage;
+	private Newspaper newsimage;
 	private JButton newspaper;
 	private JButton map;
 	private JButton close;
@@ -152,11 +153,19 @@ public class UpdateView extends SubMenu{
 		mapimage.revalidate();
 		repaint();
 	}
+	public void showNewspaper(){
+		newsimage = new Newspaper();
+		newsimage.addMouseListener(buttonWatch);
+		
+		setContentPane(newsimage);
+		newsimage.revalidate();
+		repaint();
+	}
 	
 	public class ButtonClick implements MouseListener {
 		public void mouseClicked(MouseEvent evt) {
-			if (evt.getSource()==mapimage){
-				//setContentPane(panel);
+			if (evt.getSource()==mapimage || evt.getSource()==newsimage){
+				display();
 			}
 		}
 		public void mouseEntered(MouseEvent evt) {
@@ -176,10 +185,10 @@ public class UpdateView extends SubMenu{
 		public void mousePressed(MouseEvent evt) {}
 		public void mouseReleased(MouseEvent evt) {
 			if (mousein == 1 && evt.getSource()==newspaper){
-				System.out.println("Newspaper");
+				showNewspaper();
 			}
 			if (mousein == 2 && evt.getSource()==map){
-				//showMap();
+				showMap();
 			}
 			if (mousein == 3 && evt.getSource()==close){
 				setVisible(false); //you can't see me!

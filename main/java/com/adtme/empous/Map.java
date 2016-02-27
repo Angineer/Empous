@@ -11,17 +11,17 @@ public class Map extends JPanel {
 	
 	public Map(){
 		if (Empous.Gov.getStat("census")<=50000)
-			mapimg = Empous.LoadImage("src/main/resources/images/map1.png");
+			mapimg = Empous.LoadImage("/main/resources/images/map1.png");
 		else if (Empous.Gov.getStat("census")<=1000000)
-			mapimg = Empous.LoadImage("src/main/resources/images/map2.png");
+			mapimg = Empous.LoadImage("/main/resources/images/map2.png");
 		else if (Empous.Gov.getStat("census")<=300000000)
-			mapimg = Empous.LoadImage("src/main/resources/images/map3.png");
+			mapimg = Empous.LoadImage("/main/resources/images/map3.png");
 		else if (Empous.Gov.getStat("census")<=6000000000D)
-			mapimg = Empous.LoadImage("src/main/resources/images/map4.png");
+			mapimg = Empous.LoadImage("/main/resources/images/map4.png");
 		else if (Empous.Gov.getStat("census")<=100000000000D)
-			mapimg = Empous.LoadImage("src/main/resources/images/map5.png");
+			mapimg = Empous.LoadImage("/main/resources/images/map5.png");
 		else
-			mapimg = Empous.LoadImage("src/main/resources/images/map6.png");
+			mapimg = Empous.LoadImage("/main/resources/images/map6.png");
 	}
 	
 	public void paintComponent(Graphics g){

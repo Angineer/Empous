@@ -20,7 +20,7 @@ public class SubMenu extends JFrame{
 		
 		// Basic frame settings
 		setBackground(Color.WHITE);
-		setSize(500,350);
+		setSize(450,350);
 		setResizable(false);
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 	    setLocation( (screensize.width - getWidth())/2, (screensize.height - getHeight())/2); // Put it in the middle
@@ -44,14 +44,13 @@ public class SubMenu extends JFrame{
 		panel.add(content, BorderLayout.CENTER);
 		panel.add(buttons, BorderLayout.SOUTH);
 		
-		setContentPane(panel);
-		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
 	public void display(){
-		setVisible(true);
+		setContentPane(panel);
 		panel.revalidate();
+		setVisible(true);
 	}
 	
 	public void setDescription(String iconPath, String text){
