@@ -325,24 +325,24 @@ public class InGame extends JPanel {
 		delhappy_int=(int) Math.round(delhappy);
 		
 		// Testing code
-		System.out.println("factor1 ="+f1);
-		System.out.println("factor2 ="+f2);
-		System.out.println("factor3 ="+f3);
-		System.out.println("factor4 ="+f4);
-		System.out.println("factor5 ="+f5);
-		System.out.println("factor6 ="+f6);
-		System.out.println("factor7 ="+f7);
-		System.out.println("factor8 ="+f8);
-		System.out.println("factor9 ="+f9);
-		System.out.println("factor10 ="+f10);
-		System.out.println("factor11 ="+f11);
-		System.out.println("factor12 ="+f12);
-		System.out.println("factor13 ="+f13);
-		System.out.println("factor14 ="+f14);
-		System.out.println("factor15 ="+f15);
-		System.out.println("factor16 ="+f16);
-		System.out.println("factor17 ="+f17);
-		System.out.println("delhappy = "+delhappy+","+delhappy_int);
+		//System.out.println("factor1 ="+f1);
+		//System.out.println("factor2 ="+f2);
+		//System.out.println("factor3 ="+f3);
+		//System.out.println("factor4 ="+f4);
+		//System.out.println("factor5 ="+f5);
+		//System.out.println("factor6 ="+f6);
+		//System.out.println("factor7 ="+f7);
+		//System.out.println("factor8 ="+f8);
+		//System.out.println("factor9 ="+f9);
+		//System.out.println("factor10 ="+f10);
+		//System.out.println("factor11 ="+f11);
+		//System.out.println("factor12 ="+f12);
+		//System.out.println("factor13 ="+f13);
+		//System.out.println("factor14 ="+f14);
+		//System.out.println("factor15 ="+f15);
+		//System.out.println("factor16 ="+f16);
+		//System.out.println("factor17 ="+f17);
+		//System.out.println("delhappy = "+delhappy+","+delhappy_int);
 		
 		Empous.Gov.setStat("publicopinion",Empous.Gov.getStat("publicopinion")+delhappy_int);
 		if (Empous.Gov.getStat("publicopinion")<0) Empous.Gov.setStat("publicopinion", 0);
@@ -350,7 +350,7 @@ public class InGame extends JPanel {
 		Empous.Gov.setRiot(riotGen());	//See if the people riot
 		
 		// Check for win or lose
-		if (Empous.Gov.getStat("publicopinion")>=100 || Empous.Gov.getStat("publicopinion")==0){
+		if (Empous.Gov.getStat("publicopinion")>100 || Empous.Gov.getStat("publicopinion")==0){
 			return 1;
 		}
 		return 0; //If no previous conditions met, continue playing
@@ -412,6 +412,7 @@ public class InGame extends JPanel {
 				int end=Process();
 				if(end==1){
 					Empous.winLose();
+					Empous.window.setTitle("Empous");
 					Empous.window.display(Empous.menu);
 				}
 				else{

@@ -13,7 +13,7 @@ public class SubMenu extends JFrame{
 	private JPanel buttons;
 	private ImageIcon icon;
 	
-	Color DescColor = Color.GRAY;
+	Color DescColor = Color.BLACK;
 
 	public SubMenu(){
 		super(); //Create the frame

@@ -46,6 +46,7 @@ public class UpdateView extends SubMenu{
 	
 	public void refresh(int newGame){
 		String line1 = "", line2 = "", line3 = "";
+		int publicOpinion;
 		//jenn.setFont(description.getFont());
 		if (newGame==1){
 			setDescription("/main/resources/images/JennIcon.png", "Hi! My name is Jennifer.");
@@ -67,42 +68,42 @@ public class UpdateView extends SubMenu{
 			
 			jenn.setText(line1+"\n\n"+line2+"\n\n"+line3);
 			
-			if(Empous.Gov.getStat("publicopinion")==0){
-				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is DESTROYED");
-				jenn.setText("Despite your best efforts, your dream of an empire that ruled the world has " +
-				"come to a bitter, fruitless end. \n\n It has been an honor serving you, mayor.");
-			}
-			else if(Empous.Gov.getStat("publicopinion")<=10){
-				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is ABYSMAL");
-			}
-			else if(Empous.Gov.getStat("publicopinion")<=25){
-				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is TERRIBLE");
-			}
-			else if(Empous.Gov.getStat("publicopinion")<=50){
-				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is BAD");
-			}
-			else if(Empous.Gov.getStat("publicopinion")<=75){
-				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is GOOD");
-			}
-			else if(Empous.Gov.getStat("publicopinion")<=90){
-				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is GREAT");
-			}
-			else if(Empous.Gov.getStat("publicopinion")<=100){
-				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is UTOPIAN");
-			}
-			else if(Empous.Gov.getStat("publicopinion")>100){
-				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is COMPLETE");
-				jenn.setText("You did it! Your hard work and perseverence have paid off and your empire " +
-				"now governs all of human existence. Who knew this would be so rewarding?");
-			}
-			// TODO fix hierarchy of text and use local variable to store public opinion, 
-			// rather than calling method in each if statement
-			/*if (Empous.Gov.riotstate!=0){
+			publicOpinion = Empous.Gov.getStat("publicopinion");
+			
+			if (publicOpinion>0 && publicOpinion<100 && Empous.Gov.getRiot()==true){
 				jenn.setText("YOUR CITIZENS ARE RIOTING! IMPROVE THE SITUATION QUICK!\n\n" +
 						"If you don't make some good changes, there is no saying what will become " +
 						"of your empire's stability! You can always increase the military for now, " +
 						"but there is no substitute for fixing the underlying causes!");
-			}*/
+			}
+			if(publicOpinion==0){
+				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is DESTROYED");
+				jenn.setText("Despite your best efforts, your dream of an empire that ruled the world has " +
+				"come to a bitter, fruitless end. \n\n It has been an honor serving you, mayor.");
+			}
+			else if(publicOpinion<=10){
+				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is ABYSMAL");
+			}
+			else if(publicOpinion<=25){
+				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is TERRIBLE");
+			}
+			else if(publicOpinion<=50){
+				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is BAD");
+			}
+			else if(publicOpinion<=75){
+				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is GOOD");
+			}
+			else if(publicOpinion<=90){
+				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is GREAT");
+			}
+			else if(publicOpinion<=100){
+				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is UTOPIAN");
+			}
+			else if(publicOpinion>100){
+				setDescription("/main/resources/images/JennIcon.png", "Your empire's status is COMPLETE");
+				jenn.setText("You did it! Your hard work and perseverence have paid off and your empire " +
+				"now governs all of human existence. Who knew this would be so rewarding?");
+			}
 		}
 	}
 	
